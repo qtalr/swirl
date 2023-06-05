@@ -1,0 +1,361 @@
+- Class: meta
+  Course: swirl
+  Lesson: Data visualization
+  Author: Jerid Francom
+  Type: Standard
+  Organization: WFU
+  Version: 1.0
+
+- Class: text
+  Output: In this lesson, you learn to explore data visually in text and in graphics.
+
+- Class: text
+  Output: "Don't forget that you can, temporarily, leave the lesson by typing play() and then
+    return by typing nxt()."
+
+- Class: text
+  Output: Data visualization is a key step in the process of analyzing data. Visualization methods
+    aim to summarize associations between variables and values in the data. The methods we use
+    to create these summaries depends on the type and informational value of the variables we
+    aim to work with.
+
+- Class: text
+  Output: In statistics there are two main informational types --categorical and continuous variables.
+    Within each there are two other sub-types, nominal and ordinal, on the one hand, and interval
+    and ratio, on the other. In R there is a loose relationship between vector types and statistical
+    information value.
+
+- Class: mult_question
+  Output: Why do I say there is a 'loose' relationship?
+  AnswerChoices: Statistics is an in-exact science.;R does not like doing math.;Any vector type and be interpreted as categorical.
+  CorrectAnswer: Any vector type and be interpreted as categorical.
+  AnswerTests: omnitest(correctVal= 'Any vector type and be interpreted as categorical.')
+  Hint: Even numerical vectors can be interpreted as categorical!
+
+- Class: text
+  Output: In most cases, however, numeric vector types will be assumed to be continuous and all other types categorical.
+
+- Class: cmd_question
+  Output: Let's take a look at some data and see how to visualize the relationship between different
+    types and numbers of vectors. Type 'diamonds' now to preview the data.
+  CorrectAnswer: diamonds
+  AnswerTests: omnitest(correctExpr='diamonds')
+  Hint: Type 'diamonds'.
+
+- Class: cmd_question
+  Output: The 'diamonds' dataset comes included with the 'ggplot2' package. You can find out more about
+    this dataset by typing '?diamonds'. Do this now and read up on the specifics of the dataset.
+  CorrectAnswer: ?diamonds
+  AnswerTests: omnitest(correctExpr='?diamonds')
+  Hint: Type '?diamonds'.
+
+- Class: mult_question
+  Output: Using the information on the 'diamonds' dataset, what does the 'cut' variable contain?
+  AnswerChoices: Weight of the diamond;Quality of the cut of the diamond;Size of the cut of the diamond
+  CorrectAnswer: Quality of the cut of the diamond
+  AnswerTests: omnitest(correctVal= 'Quality of the cut of the diamond')
+  Hint: Look under the 'Format' heading and then find the variable 'cut'.
+
+- Class: text
+  Output: It is extremely important to know what each variable in a dataset aims to represent. Without this knowledge
+    the visualization of the data will be meaningless to us.
+
+- Class: cmd_question
+  Output: Let's explore both text and graphic summaries of data, starting with text. The 'diamonds' dataset
+    is a 'tibble' type of data frame so it already contains a lot of information that we would have to solicit
+    using 'dim()' and 'str()', for example, but we can find out something more about the distribution of the
+    variables in a dataset with 'summary()'. Use this function on the 'diamonds' dataset now.
+  CorrectAnswer: summary(diamonds)
+  AnswerTests: omnitest(correctExpr='summary(diamonds)')
+  Hint: Type 'summary(diamonds)'.
+
+- Class: text
+  Output: The output from 'summary()' can be a bit overwhelming if there are a lot of variables in the
+    dataset. But on closer inspection what you will notice is that R treats our categorical and continuous
+    variables differently. For example, 'carat' is a continuous variable so we get a listing that includes
+    the quantiles, mean, and median values. For a categorical variable, the output is a count of each of
+    the values of that variable, so in 'cut' we see that 1,610 rows have the value 'Fair'.
+
+- Class: text
+  Output: With this basic overview of the data in hand, let's now turn to exploring variables
+    by themselves and in combination with other variables --first in text form and later with graphics.
+    Again, knowing the informational value of the variables we are going to explore is going to be key.
+
+- Class: cmd_question
+  Output: To summarize categorical variables we create tables of the counts of the values of those variables.
+    A single categorical variable, such as 'color' in the 'diamonds' dataset can be passed to the 'table()' function.
+    We've used 'table()' in another lesson when we created frequency tables. Try it now on 'diamonds$color'.
+  CorrectAnswer: table(diamonds$color)
+  AnswerTests: omnitest(correctExpr='table(diamonds$color)')
+  Hint: Type 'table(diamonds$color)'.
+
+- Class: cmd_question
+  Output: Another function, that will look a lot more similar in use to the functions we will use in statistical analyses, is the 'xtabs()' function. This function can peform tabulation operations, just like 'table()' but also allows for stringing multiple categorical variables together to get a 'cross-tabulation' or 'contingency table'. Type 'xtabs(~ color + cut, data = diamonds)'.
+  CorrectAnswer: xtabs(~ color + cut, data = diamonds)
+  AnswerTests: omnitest(correctExpr='xtabs(~ color + cut, data = diamonds)')
+  Hint: Type 'xtabs(~ color + cut, data = diamonds)'.
+
+- Class: cmd_question
+  Output: We see that the output from the previous command returns a contingency table where the 'color' variable corresponds to the rows and 'cut' the columns. If we add another categorical variable to the formula we will get a series of contingency tables, one for each distinct value in the variable. Type 'xtabs(~ color + cut + clarity, data = diamonds)'.
+  CorrectAnswer: xtabs(~ color + cut + clarity, data = diamonds)
+  AnswerTests: omnitest(correctExpr='xtabs(~ color + cut + clarity, data = diamonds)')
+  Hint: Type 'xtabs(~ color + cut + clarity, data = diamonds)'.
+
+- Class: text
+  Output: When we explore categorical variables we summarize their counts, or frequencies. Now when we combine
+    categorical variables with continuous variables, counts do not help us summarize. Instead we tend to use a
+    summary statistic like mean, median, etc. to reduce or group the values continuous variable
+    in each of the distinct values of the categorical variable. To group a continuous variable, such as 'price' by a
+    categorical variable, such as 'color' we use the 'tapply()' function.
+
+- Class: cmd_question
+  Output: The 'tapply()' function takes three arguments -the first is the continuous variable to group, the second is the categorical variable to group by, and the third is the summary statistic to use, such as mean. Type 'tapply(diamonds$price, diamonds$color, mean)'.
+  CorrectAnswer: tapply(diamonds$price, diamonds$color, mean)
+  AnswerTests: omnitest(correctExpr='tapply(diamonds$price, diamonds$color, mean)')
+  Hint: Type 'tapply(diamonds$price, diamonds$color, mean)'.
+
+- Class: cmd_question
+  Output: What we see is a tabular output corresponding to the mean 'price' for each of the values of 'color'. 'tapply()' can also take multiple categorical variables by which to summarize the data. To do this we need to use the subsetting syntax for data frames. Try 'tapply(diamonds$price, diamonds[, c("color", "clarity")], mean)' and see what you get.
+  CorrectAnswer: tapply(diamonds$price, diamonds[, c("color", "clarity")], mean)
+  AnswerTests: omnitest(correctExpr='tapply(diamonds$price, diamonds[, c("color", "clarity")], mean)')
+  Hint: Type 'tapply(diamonds$price, diamonds[, c("color", "clarity")], mean)'.
+
+- Class: cmd_question
+  Output: So we've retrieved the mean 'price' for the cross-tabulation of 'color' and 'clarity'. Run the previous command again, but this time add 'cut' to the subset to get three grouping variables.
+  CorrectAnswer: tapply(diamonds$price, diamonds[, c("color", "clarity", "cut")], mean)
+  AnswerTests: omnitest(correctExpr='tapply(diamonds$price, diamonds[, c("color", "clarity", "cut")], mean)')
+  Hint: Type 'tapply(diamonds$price, diamonds[, c("color", "clarity", "cut")], mean)'.
+
+- Class: text
+  Output: As you see the results have become a bit difficult to interpret. It is generally the case that we don't work with more than 3 variables at a time due to the confusion it creates --not because it isn't possible to do!
+
+- Class: cmd_question
+  Output: Let's now turn to working with continuous variables. Let's take a look at our 'diamonds' dataset to refresh our memory about the available variables. Type 'diamonds'.
+  CorrectAnswer: diamonds
+  AnswerTests: omnitest(correctExpr='diamonds')
+  Hint: Type 'diamonds'.
+
+- Class: cmd_question
+  Output: All of the columns except 'cut', 'color', and 'clarity' are continuous variables. Let's take a closer look at 'carat' by using 'summary()'.
+  CorrectAnswer: summary(diamonds$carat)
+  AnswerTests: omnitest(correctExpr='summary(diamonds$carat)')
+  Hint: Type 'summary(diamonds$carat)'.
+
+- Class: text
+  Output: When applied to a continuous variable, the 'summary()' function returns a set of summarizing information including the mean and median, the min and max values, and the 1st and 3rd quantile (the value separating the lower 25% and upper 25% of the data). These measures make it possible to 'view' the continuous variable in text form.
+
+- Class: mult_question
+  Output: Why can't we just count the values like we did earlier with continuous variables?
+  AnswerChoices: R doesn't like continuous variables;Continuous variables potentially contain an unweildy number of values making summarization pointless;Continuous variables are character vectors
+  CorrectAnswer: Continuous variables potentially contain an unweildy number of values making summarization pointless
+  AnswerTests: omnitest(correctVal= 'Continuous variables potentially contain an unweildy number of values making summarization pointless')
+  Hint: Too many potential values in a continuous variable!
+
+- Class: text
+  Output: When visualizing continuous variables, when no categorical variables are included, it's often best to skip text visualization and jump straight to graphically displaying the data. We'll get to that in a bit but for now let's look at how to change a continuous variable into a categorical variable.
+
+- Class: cmd_question
+  Output: What do I mean change a continuous variable to a categorical variable? Well, imagine, for simplicity, we would like to group our 'carat' variable into three classes 'small', 'medium', and 'large'. To 'break' the variable 'carat' into three groups with equal value ranges we use the 'cut()' function. We specify the number of groups to create and then pass the names of the new groups to the argument 'labels'. Type 'cut(diamonds$carat, breaks = 3, labels = c("Small", "Medium", "Large"))'.
+  CorrectAnswer: cut(diamonds$carat, breaks = 3, labels = c("Small", "Medium", "Large"))
+  AnswerTests: omnitest(correctExpr='cut(diamonds$carat, breaks = 3, labels = c("Small", "Medium", "Large"))')
+  Hint: Type 'cut(diamonds$carat, breaks = 3, labels = c("Small", "Medium", "Large"))'.
+
+- Class: cmd_question
+  Output: So a lot of labels printed out to the console screen, but what happend? What you are seeing is the labels for values that fell within the three equal ranges for the 'carat' continuous variable. To get a better sense what this does let's add the output of this function to the dataset in a new column called 'carat.groups'. Type 'diamonds$carat.groups <- cut(diamonds$carat, breaks = 3, labels = c("Small", "Medium", "Large"))'.
+  CorrectAnswer: diamonds$carat.groups <- cut(diamonds$carat, breaks = 3, labels = c("Small", "Medium", "Large"))
+  AnswerTests: omnitest(correctExpr='diamonds$carat.groups <- cut(diamonds$carat, breaks = 3, labels = c("Small", "Medium", "Large"))')
+  Hint: Type 'diamonds$carat.groups <- cut(diamonds$carat, breaks = 3, labels = c("Small", "Medium", "Large"))'.
+
+- Class: cmd_question
+  Output: Now preview the 'diamonds' dataset to see the new column.
+  CorrectAnswer: diamonds
+  AnswerTests: omnitest(correctExpr='diamonds')
+  Hint: Type 'diamonds'.
+
+- Class: cmd_question
+  Output: Now let's find the distribution of 'carat.groups' using 'xtabs()'.
+    Type 'xtabs(~ carat.groups, data = diamonds)'.
+  CorrectAnswer: xtabs(~ carat.groups, data = diamonds)
+  AnswerTests: omnitest(correctExpr='xtabs(~ carat.groups, data = diamonds)')
+  Hint: Type 'xtabs(~ carat.groups, data = diamonds)'.
+
+- Class: mult_question
+  Output: How many rows have the label 'Medium' in the 'carat.groups' variable?
+  AnswerChoices: 51666;2264;10
+  CorrectAnswer: 2264
+  AnswerTests: omnitest(correctVal= '2264')
+  Hint: 2264, of course! ;)
+
+- Class: text
+  Output: Let's now move to visualizing our data with graphics. The approach for
+    building graphics in R is called the Grammar of Graphics.
+
+- Class: text
+  Output: The Grammar of Graphics is built on three principle components. 1. Data,
+    2. Mappings or 'aesthetics' as they are called, and 3. Geometries, or 'geoms'.
+
+- Class: cmd_question
+  Output: The data component is the data frame that contains the data we would like to
+    visualize. Let's assign our data to a variable 'p' (for plot). Type 'p <- ggplot(diamonds)'.
+  CorrectAnswer: p <- ggplot(diamonds)
+  AnswerTests: omnitest(correctExpr='p <- ggplot(diamonds)')
+  Hint: Type 'p <- ggplot(diamonds)'.
+
+- Class: cmd_question
+  Output: Nothing appeared to have happend, nor will it if you type 'p' in the console.
+    At this moment there are no mappings and no geometries to tell R what to do. Let's do
+    a quick an easy mapping and basic geometry to view a categorical variable, say 'color'.
+    Type 'p + geom_bar(aes(x = color))'.
+  CorrectAnswer: p + geom_bar(aes(x = color))
+  AnswerTests: omnitest(correctExpr='p + geom_bar(aes(x = color))')
+  Hint: Type 'p + geom_bar(aes(x = color))'.
+
+- Class: text
+  Output: Now we're talking! We used the 'geom_bar()' function to create a bar plot and
+    then mapped the x-axis to the 'color' variable. By default the geometry knows to
+    count the values of the categorical variable --which is why we see the y-axis is
+    labeled 'count'.
+
+- Class: cmd_question
+  Output: To add another categorical variable to our counts, in effect creating a
+    visual cross-tabulation, we use the 'fill' asethetic. Let's map 'cut' to 'fill' and
+    see what happens. Type 'p + geom_bar(aes(x = color, fill = cut))'.
+  CorrectAnswer: p + geom_bar(aes(x = color, fill = cut))
+  AnswerTests: omnitest(correctExpr='p + geom_bar(aes(x = color, fill = cut))')
+  Hint: Type 'p + geom_bar(aes(x = color, fill = cut))'.
+
+- Class: text
+  Output: So what has happened is that each level of the variable 'color' is matched to
+    the variable 'cut'. This let's us visually inspect how many of each of the values
+    of 'cut' make up any one of the values of 'color'.
+
+- Class: cmd_question
+  Output: To add more categorical variables to the plot creating a three-way cross-tabulation,
+    we can add the 'facet_wrap()' function to our existing plot like
+    this 'p + geom_bar(aes(x = color, fill = cut)) + facet_wrap(~ clarity)'. Enter this
+    command now.
+  CorrectAnswer: p + geom_bar(aes(x = color, fill = cut)) + facet_wrap(~ clarity)
+  AnswerTests: omnitest(correctExpr='p + geom_bar(aes(x = color, fill = cut)) + facet_wrap(~ clarity)')
+  Hint: Type 'p + geom_bar(aes(x = color, fill = cut)) + facet_wrap(~ clarity)'.
+
+- Class: text
+  Output: To visualize categorical variables it was appropriate to use the 'geom_bar()' geometry
+    as we needed to tabulate counts. When we want to summarize continuous variables by the
+    values of a categorical variable, a bar plot is not adequate. A better geometry for this
+    relationship is a boxplot, and for that we use the 'geom_boxplot()' function.
+
+- Class: cmd_question
+  Output: For this summary, let's visualize the mean 'price' for diamonds of different 'color's.
+    The variable to be summarized, in this case 'price', is mapped to the y-axis and the
+    grouping variable, in this case 'color', is mapped to the x-axis.
+    Type 'p + geom_boxplot(aes(x = color, y = price))'.
+  CorrectAnswer: p + geom_boxplot(aes(x = color, y = price))
+  AnswerTests: omnitest(correctExpr='p + geom_boxplot(aes(x = color, y = price))')
+  Hint: Type 'p + geom_boxplot(aes(x = color, y = price))'.
+
+- Class: text
+  Output: A box plot, as you see, displays boxes for each of the grouping values in 'color'.
+    The boxes contain a lot of distributional information. Namely, we get a visual display
+    of much of the information we get when we run 'summary()' on a continuous variable.
+    Min and max values are marked with the vertical line, the top and bottom of the box
+    correspond to the 1st and 3rd quantile, and the bold line is the median. Dots on the
+    vertical line are marked as outliers. It's a pretty powerful visualization!
+
+- Class: cmd_question
+  Output: To add another categorical variable by which to summarize 'price', we can use
+    the 'fill' aesthetic again. See what happens when you run -- 'p + geom_boxplot(aes(x = color, y = price, fill = clarity))'.
+  CorrectAnswer: p + geom_boxplot(aes(x = color, y = price, fill = clarity))
+  AnswerTests: omnitest(correctExpr='p + geom_boxplot(aes(x = color, y = price, fill = clarity))')
+  Hint: Type 'p + geom_boxplot(aes(x = color, y = price, fill = clarity))'.
+
+- Class: mult_question
+  Output: Let's test your memory, what function did we use to add another categorical
+    variable to a plot that had already used the 'fill' aesthetic?
+  AnswerChoices: geom_histogram();facet_wrap();x = fill
+  CorrectAnswer: facet_wrap()
+  AnswerTests: omnitest(correctVal= 'facet_wrap()')
+  Hint: We used faceting!
+
+- Class: cmd_question
+  Output: Run the command to create the previous plot, but add 'facet_wrap(~ cut)' to the command.
+  CorrectAnswer: p + geom_boxplot(aes(x = color, y = price, fill = clarity)) + facet_wrap(~ cut)
+  AnswerTests: omnitest(correctExpr='p + geom_boxplot(aes(x = color, y = price, fill = clarity)) + facet_wrap(~ cut)')
+  Hint: Type 'p + geom_boxplot(aes(x = color, y = price, fill = clarity)) + facet_wrap(~ cut)'.
+
+- Class: cmd_question
+  Output: I mentioned earlier that continuous variables were best visualized graphically
+    because the number of values is often large and lends itself better to graphical display.
+    Let's visualize the distribution of a continuous variable now. Let's use the 'carat' variable.
+    To visualize the counts of a continuous variable we use the 'geom_histogram()' geometry.
+    Type 'p + geom_histogram(aes(x = carat))'.
+  CorrectAnswer: p + geom_histogram(aes(x = carat))
+  AnswerTests: omnitest(correctExpr='p + geom_histogram(aes(x = carat))')
+  Hint: Type 'p + geom_histogram(aes(x = carat))'.
+
+- Class: cmd_question
+  Output: You now see a visual represention of the counts of each of the values in the 'carat'
+    variable. The values, however, are grouped into 'bins'. There is a default value that is
+    assigned to the width of these bins, but it often isn't appropriate given the scale of
+    the data. Let's change the binwidth to a width that is more reasonable for the values
+    in 'carat'. Type 'p + geom_histogram(aes(x = carat), binwidth = .1)'.
+  CorrectAnswer: p + geom_histogram(aes(x = carat), binwidth = .1)
+  AnswerTests: omnitest(correctExpr='p + geom_histogram(aes(x = carat), binwidth = .1)')
+  Hint: Type 'p + geom_histogram(aes(x = carat), binwidth = .1)'.
+
+- Class: cmd_question
+  Output: To visualize the relationship between two (or more) continuous variables we turn
+    to another set of geometries. The 'geom_point()' function gives us a scatterplot and
+    the 'geom_smooth()' function gives us a trend line -this will make more sense in a
+    moment. Let's plot the relationship between 'carat' and 'price'. We will assign 'carat' to
+    the x-axis and 'price' to the y-axis. Type 'p + geom_point(aes(x = carat, y = price))'.
+  CorrectAnswer: p + geom_point(aes(x = carat, y = price))
+  AnswerTests: omnitest(correctExpr='p + geom_point(aes(x = carat, y = price))')
+  Hint: Type 'p + geom_point(aes(x = carat, y = price))'.
+
+- Class: text
+  Output: In a scatterplot, as in the one we just created, each point represents an observation
+    in the data, i.e. a row. The value for 'carat' and 'price' are plotted for each of these
+    observations. The general slop up and to the right suggests that the larger the carat
+    the higher the price, in general.
+
+- Class: cmd_question
+  Output: Now we can have R create a line that best approximates the points, that is, a line
+    that minimizes the distance from the line separating them in the most fair way possible.
+    Type 'p + geom_point(aes(x = carat, y = price)) + geom_smooth(aes(x = carat, y = price))'
+    to see the line it creates.
+  CorrectAnswer: p + geom_point(aes(x = carat, y = price)) + geom_smooth(aes(x = carat, y = price))
+  AnswerTests: omnitest(correctExpr='p + geom_point(aes(x = carat, y = price)) + geom_smooth(aes(x = carat, y = price))')
+  Hint: Type 'p + geom_point(aes(x = carat, y = price)) + geom_smooth(aes(x = carat, y = price))'.
+
+- Class: text
+  Output: The line suggests that the increase in 'price' is strongly related to 'carat' up
+    until 'carat' is larger than around 2.25, then the increase in price doesn't seem to
+    increase with 'carat' size increase.
+
+- Class: cmd_question
+  Output: Stepping back a bit I'd like to make quick reference to the way we created this plot.
+    In the last command we assigned mappings to both the 'geom_point()' and the 'geom_smooth()'
+    geometries. We we know that we will be using multiple geometries in a plot that share the
+    same data and mappings it's often more convenient to add the mappings to the plot in tandem
+    with assigning the data. Enter this command
+    -- 'ggplot(diamonds, aes(x = carat, y = price)) + geom_point() + geom_smooth()'.
+  CorrectAnswer: ggplot(diamonds, aes(x = carat, y = price)) + geom_point() + geom_smooth()
+  AnswerTests: omnitest(correctExpr='ggplot(diamonds, aes(x = carat, y = price)) + geom_point() + geom_smooth()')
+  Hint: Type 'ggplot(diamonds, aes(x = carat, y = price)) + geom_point() + geom_smooth()'.
+
+- Class: text
+  Output: So aesthetic mappings can be associated with the geometry calls, i.e. 'geom_bar()',
+    or the data call, i.e. 'ggplot()'. If your exploring a dataset with a single geometry
+    at a time, it's often best to incorporate mappings with the geometry. When you are
+    building up a complex graphic with multiple geometries adding aethestic mapping to 'ggplot()'
+    is more recommendable.
+
+- Class: text
+  Output: This introduction to data visualization aimed to increase your ability to explore
+    and visualize data in text and graphical form. Both text and graphic visualizations
+    are used often during an analysis to get quick visual confirmation on the distribution
+    of a single variable and the relationship between 2 or more variables. With these skills
+    you will be able to get a better 'feel' for the data that you are working with. This
+    knowledge leads to more insightful analyses.
+
+

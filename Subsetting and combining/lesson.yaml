@@ -1,0 +1,266 @@
+- Class: meta
+  Course: swirl
+  Lesson: Subsetting and combining
+  Author: Jerid Francom
+  Type: Standard
+  Organization: WFU
+  Version: 1.0
+
+- Class: text
+  Output: In this lesson, you will learn to manipulate R objects we worked with
+    in the lesson on Objects. Specifically we will see how to subset and combine
+    both vectors and data frames.
+
+- Class: text
+  Output: "Don't forget that you can, temporarily, leave the lesson by typing play()
+    and then return by typing nxt()."
+
+- Class: cmd_question
+  Output: Let's start by working with vectors and then we will pick up with data frames.
+    To work with subsetting we will need some data to work with. Using your knowledge of R,
+    create a vector containing numbers from 1 to 25 and assign the output to the variable 'x'.
+  CorrectAnswer: x <- 1:25
+  AnswerTests: any_of_exprs('x <- 1:25', 'x <- seq(25)')
+  Hint: Type either 'x <- 1:25', or 'x <- seq(25)'.
+
+- Class: mult_question
+  Output: One way to view a subset of elements in an object is to use the 'head()' function.
+    'head()' will give us the first elements of the object. If we run 'head(x)' we will get
+    the first six elements. We can also add another argument to the function and get an
+    arbitrary number of elements. So if I type 'head(x, 10)', how many elements to I
+    expect it to return?
+  AnswerChoices: 1;6;10;25
+  CorrectAnswer: 10
+  AnswerTests: omnitest(correctVal= '10')
+  Hint: 10!
+
+- Class: cmd_question
+  Output: The 'tail()' function works much the same but gives us the last elements of
+    the object. Again, the default is six elements. Let's see the last 10 elements of
+    the vector 'x' using 'tail()' now using what you've just learned.
+  CorrectAnswer: tail(x, 10)
+  AnswerTests: omnitest(correctExpr='tail(x, 10)')
+  Hint: Type 'tail(x, 10)'.
+
+- Class: cmd_question
+  Output: Now, if we want to retrieve a subset somewhere in the middle of the vector we
+    can't use 'head()' or 'tail()'. One common way to get sequential elements in a vector
+    that come somewhere in the middle we use what is called 'bracket syntax', and it looks
+    like this 'x[3:11]'. Go ahead and type this command and see what we get.
+  CorrectAnswer: x[3:11]
+  AnswerTests: omnitest(correctExpr='x[3:11]')
+  Hint: Type 'x[3:11]'.
+
+- Class: cmd_question
+  Output: If we want an arbitrary subset of elements, that is non-contiguous elements, we can turn to the 'c()' function. The 'c()' function just produces a vector, but when used within the bracket syntax it will give us a way to subset an object. Type 'x[c(1, 2, 5)] to see it in action.
+  CorrectAnswer: x[c(1, 2, 5)]
+  AnswerTests: omnitest(correctExpr='x[c(1, 2, 5)]')
+  Hint: Type 'x[c(1, 2, 5)]'
+
+- Class: cmd_question
+  Output: The bracket syntax is so flexible we can even perform logical operations that will subset our object based on the values of the elements themselves. Since 'x' is a vector of numerals we can use 'greater than >', 'less than <', 'equal to ==', etc. Let's get all elements of the vector 'x' that are greater than 12 by using 'x[x > 12]'.
+  CorrectAnswer: x[x > 12]
+  AnswerTests: omnitest(correctExpr='x[x > 12]')
+  Hint: Type 'x[x > 12]'.
+
+- Class: cmd_question
+  Output: Why do I call this a logical operation? Well, if we just run 'x > 12' you will see why. Do that now.
+  CorrectAnswer: x > 12
+  AnswerTests: omnitest(correctExpr='x > 12')
+  Hint: Type 'x > 12'.
+
+- Class: text
+  Output: As you see we get a logical vector. When inside the bracket syntax it tells R to only retrieve the elements that evaluate to TRUE --in our case 12 to 25.
+
+- Class: cmd_question
+  Output: Another way to subset elements from an object with a logical operation is by using the 'subset()' function. 'subset()' takes two arguments -the first is the object to subset and the second is a logical expression to use to subset the object. So to replicate the previous logical operation we enter this command, 'subset(x, x > 12)'. Try it now.
+  CorrectAnswer: subset(x, x > 12)
+  AnswerTests: omnitest(correctExpr='subset(x, x > 12)')
+  Hint: Type 'subset(x, x > 12)'.
+
+- Class: text
+  Output: For vectors 'subset()' is often not the most efficient way to do subsetting, but it will be much more convenient when we look at data frames... stay tuned!
+
+- Class: cmd_question
+  Output: Another way to subset vectors, that will be more helpful when we get to data frames, is subsetting by element name. Now the vector 'x' that we created will not have names by default, type 'names(x)' and see what you get.
+  CorrectAnswer: names(x)
+  AnswerTests: omnitest(correctExpr='names(x)')
+  Hint: Type 'names(x)'.
+
+- Class: text
+  Output: The 'names()' function will output the names of an object but it can also be used to add them to an object. To do this we use a new convention, assigning values to the output of a function. Generically it looks like this 'names(var) <- c('One', 'Two', 'Three')
+
+- Class: cmd_question
+  Output: Let's add some names to our vector 'x'. In this case we will use the build-in character vector 'letters' which contains all the letters of the English alphabet. Combining our knowledge of vector subsetting using bracket syntax we can add the names of 25 of the 26 letters to our vector 'x'. Type 'names(x) <- letters[1:25]'.
+  CorrectAnswer: names(x) <- letters[1:25]
+  AnswerTests: omnitest(correctExpr='names(x) <- letters[1:25]')
+  Hint: Type 'names(x) <- letters[1:25]'.
+
+- Class: cmd_question
+  Output: Type 'x' now and you will see what we've created!
+  CorrectAnswer: x
+  AnswerTests: omnitest(correctExpr='x')
+  Hint: Type 'x'.
+
+- Class: cmd_question
+  Output: With names on the vector 'x' we can perform another type of subset that uses the names themselves to retrieve element values. Type 'x["k"]' and see what you get.
+  CorrectAnswer: x["k"]
+  AnswerTests: omnitest(correctExpr='x["k"]')
+  Hint: Type 'x["k"]'.
+
+- Class: cmd_question
+  Output: We can use 'c()' to combine a character vector of names to get the values of elements corresponding to those names. Type 'x[c("a", "f", "y")]' to see it in action.
+  CorrectAnswer: x[c("a", "f", "y")]
+  AnswerTests: omnitest(correctExpr='x[c("a", "f", "y")]')
+  Hint: Type 'x[c("a", "f", "y")]'.
+
+- Class: cmd_question
+  Output: The names on objects do not change the values of the objects, so vector operations do not change. But beyond the convenience of being able to subset by names, names provide sometimes useful information for plots. Let's create a bar plot using the function 'barplot()'. Type 'barplot(x) and look over to the right in the RStudio 'Plots' pane.
+  CorrectAnswer: barplot(x)
+  AnswerTests: omnitest(correctExpr='barplot(x)')
+  Hint: Type 'barplot(x)'.
+
+- Class: text
+  Output: Good job! Now let's quickly learn how to combine vectors and then move on to working with data frames.
+
+
+- Class: cmd_question
+  Output: One way to combine vectors is to use the 'c()' function. This will a vector the length of the sum of the lengths of all the individual vectors to combine. For example, let's combine some numeric vectors. Type 'c(1:5, 11:15, 21:25)' and see what you get.
+  CorrectAnswer: c(1:5, 11:15, 21:25)
+  AnswerTests: omnitest(correctExpr='c(1:5, 11:15, 21:25)')
+  Hint: Type 'c(1:5, 11:15, 21:25)'
+
+- Class: cmd_question
+  Output: As you see each of the three vectors with five elements was combined into a vector of length 15. This same principle works for all vector types -numeric, character and logical. Let's create a character vector that combines the 'letters' vector two times. Type 'c(letters, letters)'.
+  CorrectAnswer: c(letters, letters)
+  AnswerTests: omnitest(correctExpr='c(letters, letters)')
+  Hint: Type 'c(letters, letters)'.
+
+- Class: cmd_question
+  Output: Another way to combine vectors uses the 'paste()' function. It's behavior, however, is different. It does not return a vector of the same length but rather joins the vectors. Furthermore, the result is always returned as a character vector. Try 'paste("Number:", 1:5)'.
+  CorrectAnswer: paste("Number:", 1:5)
+  AnswerTests: omnitest(correctExpr='paste("Number:", 1:5)')
+  Hint: Type 'paste("Number:", 1:5)'.
+
+- Class: cmd_question
+  Output: So as you see, 'paste()' joined the character vector "Number:" with the numeric vector '1:5'. By default 'paste()' joins the vectors with a space separating the conjoined elements. That can be changed to any character we want using the argument 'sep = "-"'.  Let's see this in action. Type 'paste("Number:", 1:5, sep = "-")'.
+  CorrectAnswer: paste("Number:", 1:5, sep = "-")
+  AnswerTests: omnitest(correctExpr='paste("Number:", 1:5, sep = "-")')
+  Hint: Type 'paste("Number:", 1:5, sep = "-")'.
+
+- Class: text
+  Output: Let's leave vectors now and turn to data frames -but we will see 'paste()' again!
+
+- Class: cmd_question
+  Output: As we saw in the Objects lesson, a data frame is a two-dimensional object comprised of groupings of vectors. Let's create a data frame to work with here so we can explore subsetting. Type 'df.a <- data.frame(1:26, letters)'.
+  CorrectAnswer: df.a <- data.frame(1:26, letters)
+  AnswerTests: omnitest(correctExpr='df.a <- data.frame(1:26, letters)')
+  Hint: Type 'df.a <- data.frame(1:26, letters)'
+
+- Class: cmd_question
+  Output: Now, using 'head()' get a preview of the first few elements of the data frame we have created.
+  CorrectAnswer: head(df.a)
+  AnswerTests: omnitest(correctExpr='head(df.a)')
+  Hint: Type 'head(df.a)'.
+
+- Class: cmd_question
+  Output: Note what we get -the first six rows of the data frame 'df.a'. Also note that the names for the columns are a bit wonky -R does not allow names that start with numbers. We can fix that by naming the columns with 'names()' just as we did with vectors. Using 'names()' assign the names 'c("Numbers", "Letters")' to the 'df.a' data frame now.
+  CorrectAnswer: names(df.a) <- c("Numbers", "Letters")
+  AnswerTests: omnitest(correctExpr='names(df.a) <- c("Numbers", "Letters")')
+  Hint: Type 'names(df.a) <- c("Numbers", "Letters")'.
+
+- Class: cmd_question
+  Output: Use 'head()' again to see the changes to the column names.
+  CorrectAnswer: head(df.a)
+  AnswerTests: omnitest(correctExpr='head(df.a)')
+  Hint: Type 'head(df.a)'.
+
+- Class: cmd_question
+  Output: Let's do some subsetting! We can apply the same logic for subsetting as
+    we did to vectors but now, because we are working with a data frame there are
+    two dimensions to consider when doing our subsetting. Let's make sure we know
+    what they are by using 'dim(df.a)'.
+  CorrectAnswer: dim(df.a)
+  AnswerTests: omnitest(correctExpr='dim(df.a)')
+  Hint: Type 'dim(df.a)'.
+
+- Class: cmd_question
+  Output: There are 26 rows and two columns. With this knowledge in mind, let's subset
+    the data frame using bracket syntax. Type 'df.a[1:10, 1:2]'.
+  CorrectAnswer: df.a[1:10, 1:2]
+  AnswerTests: omnitest(correctExpr='df.a[1:10, 1:2]')
+  Hint: Type 'df.a[1:5, 1:5]'.
+
+- Class: text
+  Output: We get the first 10 rows and both the columns. This command was somewhat
+    redundant because we didn't really subset the columns -we asked for both using '1:2'.
+    In the case where we are only subsetting the number of rows (or columns), we don't need to
+    even add the subset syntax for that position. Hence 'df.a[1:10, ] will return
+    the exactly the same result as before. So remember, when subsetting a data frame
+    always note that the rows subset goes in the first position and columns in the
+    second -just as we see in the output of the 'dim()' function.
+
+- Class: cmd_question
+  Output: For completeness, let's subset an arbitrary set of rows and only retrieve
+    the second column. Type 'df.a[c(1,5,10,15), 2]'.
+  CorrectAnswer: df.a[c(1,5,10,15), 2]
+  AnswerTests: omnitest(correctExpr='df.a[c(1,5,10,15), 2]')
+  Hint: Type 'df.a[c(1,5,10,15), 2]'
+
+- Class: text
+  Output: You might be surpised by the output. It no longer appears in tablular form.
+    That's to be expected as a single column is no longer two dimensional, rather
+    its a one dimensional vector!
+
+- Class: cmd_question
+  Output: Returning to our names, we can, just as we did with vectors, subset by
+    names with data frames. At the moment only our columns have names, so
+    let's use them. Let's get the first five rows from the 'Letters' column,
+    that is column number '2', this time using the column name.
+    Type 'df.a[1:5, "Letters"]'.
+  CorrectAnswer: df.a[1:5, "Letters"]
+  AnswerTests: omnitest(correctExpr='df.a[1:5, "Letters"]')
+  Hint: Type 'df.a[1:5, "Letters"]'.
+
+- Class: cmd_question
+  Output: I mentioned earlier in this lesson that the function 'subset()' would be
+    quite helpful for data frames. Well, here we are. If we want to perform a logical
+    evaluation on one of the columns, we use this type of command -- 'subset(df.a, Numbers > 20)'.
+    Enter it and see what happens.
+  CorrectAnswer: subset(df.a, Numbers > 20)
+  AnswerTests: omnitest(correctExpr='subset(df.a, Numbers > 20)')
+  Hint: Type 'subset(df.a, Numbers > 20)'.
+
+- Class: cmd_question
+  Output: The last topic to cover in this lesson is combining data frames. As a data frame has two dimensions corresponding to rows and columns it makes sense that we would be able to combine them by rows and by columns. 'rbind()' combines data frames by rows, effectively stacking one data frame on the other. Type 'rbind(df.a, df.a)' and see.
+  CorrectAnswer: rbind(df.a, df.a)
+  AnswerTests: omnitest(correctExpr='rbind(df.a, df.a)')
+  Hint: Type 'rbind(df.a, df.a)'.
+
+- Class: cmd_question
+  Output: To combine by columns use 'cbind()'. Type 'cbind(df.a, df.a)'.
+  CorrectAnswer: cbind(df.a, df.a)
+  AnswerTests: omnitest(correctExpr='cbind(df.a, df.a)')
+  Hint: Type 'cbind(df.a, df.a)'.
+
+- Class: cmd_question
+  Output: If we want to combine the columns in our data frame 'df.a' into one column we turn back to 'paste()'. As you remember, 'paste()' will join two or more vectors -with the option to decide what character to use in the joining operation. Let's join 'Numbers' and 'Letters' separating them with a hypen, '-'. Type 'paste(df.a$Numbers, df.a$Letters, sep = "-")'.
+  CorrectAnswer: paste(df.a$Numbers, df.a$Letters, sep = "-")
+  AnswerTests: omnitest(correctExpr='paste(df.a$Numbers, df.a$Letters, sep = "-")')
+  Hint: Type 'paste(df.a$Numbers, df.a$Letters, sep = "-")'.
+
+- Class: cmd_question
+  Output: A practical application of joining two columns in a data frame is to create a new column with the combined data. We can do this by assigning the output of the previous command to a new column 'df.a$labels'. Type 'df.a$labels <- paste(df.a$Numbers, df.a$Letters, sep = "-")'.
+  CorrectAnswer: df.a$labels <- paste(df.a$Numbers, df.a$Letters, sep = "-")
+  AnswerTests: omnitest(correctExpr='df.a$labels <- paste(df.a$Numbers, df.a$Letters, sep = "-")')
+  Hint: Type 'df.a$labels <- paste(df.a$Numbers, df.a$Letters, sep = "-")'.
+
+- Class: cmd_question
+  Output: Do a quick preview of the data frame using 'head()' to see the changes.
+  CorrectAnswer: head(df.a)
+  AnswerTests: omnitest(correctExpr='head(df.a)')
+  Hint: Type 'head(df.a)'.
+
+- Class: text
+  Output: That's it for this lesson. You've covered a lot of ground. The experience working with vectors and data frames will carry through everything you do in R. The concepts you've worked with are fundamental, but require practice to truly understand. Continue to work with this data and create your own to continue to reenforce these concepts.
+

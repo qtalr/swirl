@@ -1,0 +1,191 @@
+- Class: meta
+  Course: swirl
+  Lesson: Loops and vectorization
+  Author: Jerid Francom
+  Type: Standard
+  Organization: WFU
+  Version: 1.0
+
+- Class: text
+  Output: In this lesson, you will learn about two ways to have R do iterative
+    operations on data -'vectorization' and 'looping' with the 'lapply()' function.
+
+- Class: text
+  Output: "Don't forget that you can, temporarily, leave the lesson by typing play() and then
+    return by typing nxt()."
+
+- Class: text
+  Output: "'Loops' and 'vectorization' aim to apply an operation or a function on a series of
+    elements in an object. Let's first look at vectorization as it is a unique, but powerful
+    feature of R."
+
+- Class: cmd_question
+  Output: Type this command and see what happens, '1:10 * 2'.
+  CorrectAnswer: 1:10 * 2
+  AnswerTests: omnitest(correctExpr='1:10 * 2')
+  Hint: Type '1:10 * 2'.
+
+- Class: text
+  Output: What is going on here? Well, R takes the numeric vector '1:10' which is 'c(1,2,3,4,5,6,7,8,9,10)'
+    and multiples each element in this vector by 2. This operation is equivalent
+    to running 'c(1*2, 2*2, 3*2, 4*2, 5*2, 6*2, 7*2, 8*2, 9*2, 10*2)' -but '1:10 * 2'
+    is much more convenient, no?
+
+- Class: text
+  Output: It is often said that in R 'everything is a vector'. One thing this means
+    is that the logic of iterative operations is pervasive. If a vector is provided
+    to a function, the function will process the elements in the vector in turn.
+
+- Class: cmd_question
+  Output: "Let's create a character vector and look at how functions apply iterative processing to vectors. Type 'y <- c(\"This is a sentence.\", \"This is another sentence.\", \"OK, here is another, just for fun.\")'"
+  CorrectAnswer: y <- c("This is a sentence.", "This is another sentence.", "OK, here is another, just for fun.")
+  AnswerTests: omnitest(correctExpr='y <- c("This is a sentence.", "This is another sentence.", "OK, here is another, just for fun.")')
+  Hint: 'y <- c("This is a sentence.", "This is another sentence.", "OK, here is another, just for fun.")'
+
+- Class: cmd_question
+  Output: And let's see the type and structure of the object 'y' with 'str()'.
+  CorrectAnswer: str(y)
+  AnswerTests: omnitest(correctExpr='str(y)')
+  Hint: Type 'str(y)'.
+
+- Class: cmd_question
+  Output: So we see that 'y' is a single character vector. Applying a function such
+    as 'nchar()', which sums the number of characters in a vector element, we see that
+    a value is returned for each element in the vector 'y'. Type 'nchar(y)'.
+  CorrectAnswer: nchar(y)
+  AnswerTests: omnitest(correctExpr='nchar(y)')
+  Hint: Type 'nchar(y)'
+
+- Class: cmd_question
+  Output: Now, some functions will turn simple vectors into more complex objects.
+    Take 'tokens()' from the 'quanteda' package. After providing this function
+    with a character vector as an argument we get a new type of object, a list.
+    Let's do this now and assign the output to 'z'. I've already loaded the package
+    so you can type 'z <- tokens(y)'.
+  CorrectAnswer: z <- tokens(y)
+  AnswerTests: omnitest(correctExpr='z <- tokens(y)')
+  Hint: Type 'z <- tokens(y)'.
+
+- Class: cmd_question
+  Output: And let's see the type and structure of the object 'z' with 'str()'.
+  CorrectAnswer: str(z)
+  AnswerTests: omnitest(correctExpr='str(z)')
+  Hint: Type 'str(z)'.
+
+- Class: cmd_question
+  Output: Let's also view 'z' to get a sense of what the data look like. Type 'z' and
+    hit Enter.
+  CorrectAnswer: z
+  AnswerTests: omnitest(correctExpr='z')
+  Hint: Type 'z'.
+
+- Class: cmd_question
+  Output: Say we want to get the number of characters of each of the words in the list
+    elements. Let's apply the 'nchar()' function to the list object 'z' which contains
+    three character vectors containing our words and see what happens.
+  CorrectAnswer: nchar(z)
+  AnswerTests: omnitest(correctExpr='nchar(z)')
+  Hint: Type 'nchar(z)'.
+
+
+- Class: cmd_question
+  Output: This did not give us the number of characters of each word! To get the number
+    of characters for each character vector in the list we need to turn to a type
+    of 'Looping' function, 'lapply()'. The name comes from *l*ist *apply* and as
+    the name suggests it takes a list as an argument. The apply part means that
+    it will take a function as a second argument and apply this to the list. Let's
+    see this in action. Type 'lapply(z, nchar)'.
+  CorrectAnswer: lapply(z, nchar)
+  AnswerTests: omnitest(correctExpr='lapply(z, nchar)')
+  Hint: Type 'lapply(z, nchar)'.
+
+- Class: cmd_question
+  Output: So what 'lapply()' and other looping functions do, is iteratively apply a
+    function to a series of vectors contained in a list. We can use any function
+    as the second argument, provided that it is appropriate to process the list
+    elements. So let's try to find the number of words in each list element by using
+    the function 'length()'. Note that if a function does not need another argument
+    other than the list to do it's job, the '()' are not added to the function.
+    Type 'lapply(z, length)'.
+  CorrectAnswer: lapply(z, length)
+  AnswerTests: omnitest(correctExpr='lapply(z, length)')
+  Hint: Type 'lapply(z, length)'.
+
+- Class: text
+  Output: A list, as we have just learned, is a collection of vectors. This is the same
+    definition we gave to data frames in a previous lesson. The difference is,
+    however, a list allows for each vector in the collection to have a distinct
+    length. A data frame, on the other hand, is a collection of vectors where all
+    vectors must have the same length. This gives the data frame its tabular
+    structure. With this knowledge in hand, we can now see that 'lapply()' can
+    help us process columns in a data frame as well.
+
+- Class: cmd_question
+  Output: Let's use a dataset built into R to see this in action. Type 'head(mtcars)'
+    to see the first few rows of the data frame.
+  CorrectAnswer: head(mtcars)
+  AnswerTests: omnitest(correctExpr='head(mtcars)')
+  Hint: Type 'head(mtcars)'.
+
+- Class: cmd_question
+  Output: Say we want to calculate the mean for each of the columns in the data
+    frame 'mtcars'. We type 'lapply(mtcars, mean)'. Do this now.
+  CorrectAnswer: lapply(mtcars, mean)
+  AnswerTests: omnitest(correctExpr='lapply(mtcars, mean)')
+  Hint: Type 'lapply(mtcars, mean)'.
+
+- Class: text
+  Output: So 'lapply()' has looped through each of the columns in 'mtcars' applying
+    the 'mean()' function to each. It is important to note that the function you
+    apply, in this case 'mean()', must be appropriate for each of the vectors to
+    be processed. In this case all of the columns containing our vectors are numeric
+    so 'mean()' makes sense.
+
+- Class: cmd_question
+  Output: Let's look at another built in dataset that contains a mix of vector types. Type 'head(iris)'.
+  CorrectAnswer: head(iris)
+  AnswerTests: omnitest(correctExpr='head(iris)')
+  Hint: Type 'head(iris)'.
+
+- Class: cmd_question
+  Output: We see that 'iris' has a 'Species' column which contains the names of the flowers.
+    Applying a numeric function to this column would not be appropriate -so we will get
+    an error if we try to apply 'mean()' to the entire data frame. To avoid this we can
+    subset the data frame and only send the appropriate numeric columns.
+    Type 'lapply(iris[, 1:4], mean)'.
+  CorrectAnswer: lapply(iris[, 1:4], mean)
+  AnswerTests: omnitest(correctExpr='lapply(iris[, 1:4], mean)')
+  Hint: Type 'lapply(iris[, 1:4], mean)'.
+
+- Class: text
+  Output: We now have an understanding what types of data 'lapply()' takes, its
+    important to note that, up until now, we've used some basic functions
+    that take one argument  but 'lapply()' will apply any function to our
+    input data -including a custom function. This can be very helpful indeed.
+
+- Class: text
+  Output: It is also important to point out that 'lapply()' has a sister function 'sapply()' which
+    works just the same as 'lapply()' but instead of taking a list of vectors as input
+    and returning a list as output, it returns vectors. The 's' in 'sapply()' can be
+    understood as 'simplify' apply.
+
+- Class: cmd_question
+  Output: Let's change 'lapply()' to 'sapply()' for our last command and see what
+    happens. Type 'sapply(iris[, 1:4], mean)'. (Remember you can
+    use the up and down arrows on your keyboard to get commands you have previously
+    typed in this session.)
+  CorrectAnswer: sapply(iris[, 1:4], mean)
+  AnswerTests: omnitest(correctExpr='sapply(iris[, 1:4], mean)')
+  Hint: Type 'sapply(iris[, 1:4], mean)'.
+
+- Class: text
+  Output: To recap, in R all objects are vectors. This means that applying an operation
+    to a vector means that each element in the vector has the operation applied to it
+    iteratively -this is what is known as 'vectorization'. In cases where we have multiple
+    vectors in a collection, such as a data frame or a list object, the function 'lapply()' cycles,
+    or loops, over each of the vectors and then applies a function to each of the component
+    vectors -which in turn applies the function to each element of that particular vector.
+    This combination of vectorization and looping to processing data is a strength of R.
+    As you become more comfortable with these concepts your code will become more succinct
+    and powerful -but it definitely takes practice!
+

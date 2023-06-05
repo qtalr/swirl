@@ -1,0 +1,21 @@
+- Class: meta
+  Course: swirl
+  Lesson: Version control
+  Author: Jerid Francom
+  Type: Standard
+  Organization: WFU
+  Version: 1.0
+
+- Class: text
+  Output: "In this lesson, ..."
+
+- Class: text
+  Output: "Don't forget that you can, temporarily, leave the lesson by typing play() and then
+    return by typing nxt()."
+
+
+- Class: text
+  Output: "In this lesson, you learned how to ... Thanks for playing!"
+
+
+

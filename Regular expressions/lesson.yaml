@@ -1,0 +1,175 @@
+- Class: meta
+  Course: swirl
+  Lesson: Regular expressions
+  Author: Jerid Francom
+  Type: Standard
+  Organization: WFU
+  Version: 1.0
+
+- Class: text
+  Output: In this lesson, you will learn the basics of how to define search patterns
+    to match strings, or characters, using Regular Expressions.
+
+- Class: text
+  Output: "Don't forget that you can, temporarily, leave the lesson by typing play() and then
+    return by typing nxt()."
+
+- Class: cmd_question
+  Output: In this lesson we will be using text I have loaded into the workspace for pratice.
+    To get a look at the data, type 'head(tokens)'.
+  CorrectAnswer: head(tokens)
+  AnswerTests: omnitest(correctExpr='head(tokens)')
+  Hint: Type 'head(tokens)'.
+
+- Class: text
+  Output: Regular expressions are used for creating search patterns. They can be made up of
+    either one or both of two components -literals and metacharacters. Literals are plain
+    text characters that match the exact same characters in a string. Metacharacters have
+    special meaning and match characters more abstractly.
+
+- Class: cmd_question
+  Output: Let's see what this means. Let's create a pattern completely formed of literal
+    characters. We are going to use the 'str_extract()' function from the 'stringr' package
+    to do the work, we'll just need to create the pattern. This function takes two
+    arguments -the string and the pattern, in that order. So, to search the pattern 'the' in
+    the 'tokens' character vector we enter 'str_extract(tokens, "the")'. We are going to
+    pipe the results to the function 'table()' to summarize the count of the matches made
+    in this lesson. Type 'str_extract(tokens, "the") %>% table()'.
+  CorrectAnswer: str_extract(tokens, "the") %>% table()
+  AnswerTests: omnitest(correctExpr='str_extract(tokens, "the") %>% table()')
+  Hint: Type 'str_extract(tokens, "the") %>% table()'
+
+- Class: text
+  Output: As you see it matched all the instances of 'the', some 138 of them. Note, however,
+    that search expressions are case-sensitive. That is, 'the' and 'The' are not the same.
+
+- Class: cmd_question
+  Output: The real power of Regular expressions, however, comes from combining metacharacters
+    and literals, or just metacharacters. The most basic metacharacter is the '.'. It matches
+    one single character. Let's add it to our previous search pattern and see what we get,
+    type 'str_extract(tokens, "the.") %>% table()'. (Remember that the up and down arrows
+    will be useful in this lesson to avoid retyping the entire command.)
+  CorrectAnswer: str_extract(tokens, "the.") %>% table()
+  AnswerTests: omnitest(correctExpr='str_extract(tokens, "the.") %>% table()')
+  Hint: Type 'str_extract(tokens, "the.") %>% table()'.
+
+- Class: text
+  Output: Metacharacters can be appended, prepended, and interleaved with literals.
+    Note, however, if we want to match a literal period, or any other literal version
+    of a metacharacter we need to 'escape' the metacharacter. So if we want to search for
+    a literal '.' we need to escape it like this '\\.' .
+
+- Class: cmd_question
+  Output: Two very useful metacharacter operators are the '+' and the '*'. When used in combination with another metacharacter they match one or more of the previous item or zero or more of the previous item. If we include a '+' after the '.' metacharacter, see what happens, type 'str_extract(tokens, "the.+") %>% table()'.
+  CorrectAnswer: str_extract(tokens, "the.+") %>% table()
+  AnswerTests: omnitest(correctExpr='str_extract(tokens, "the.+") %>% table()')
+  Hint: Type 'str_extract(tokens, "the.+") %>% table()'.
+
+- Class: cmd_question
+  Output: Given each element is a word in the 'tokens' vector, the match goes to the
+    end of the word. Of note, here, is that the string 'the' was not matched. We know
+    there are 138 of them in the 'tokens' vector, so why doesn't it appear in this set
+    of matches? The answer is the expression 'the.+' matches 'the' and one or more
+    items -'the' does not fit this pattern. To include 'the' in this match we can
+    use the '*' operator. Type 'str_extract(tokens, "the.*") %>% table()'.
+  CorrectAnswer: str_extract(tokens, "the.*") %>% table()
+  AnswerTests: omnitest(correctExpr='str_extract(tokens, "the.*") %>% table()')
+  Hint: Type 'str_extract(tokens, "the.*") %>% table()'.
+
+- Class: cmd_question
+  Output: Let's now search for words containing 'the'. We can do this like
+    so, 'str_extract(tokens, ".*the.*") %>% table()'.
+  CorrectAnswer: str_extract(tokens, ".*the.*") %>% table()
+  AnswerTests: omnitest(correctExpr='str_extract(tokens, ".*the.*") %>% table()')
+  Hint: Type 'str_extract(tokens, ".*the.*") %>% table()'.
+
+
+- Class: cmd_question
+  Output: Now say we want to match only words where 'the' begins the word. This is where we use metacharacter anchors. There are two the '^' and the '$'. The '^' signals the expression to anchor the expression that follows to the beginning of the search space, elements in the 'tokens' vector in this case. The '$' anchors the expression preceding to the end of the search space. Type 'str_extract(tokens, "^the.*") %>% table'.
+  CorrectAnswer: str_extract(tokens, "^the.*") %>% table()
+  AnswerTests: omnitest(correctExpr='str_extract(tokens, "^the.*") %>% table()')
+  Hint: Type 'str_extract(tokens, "^the.*") %>% table()'.
+
+- Class: cmd_question
+  Output: The metacharacter '?' instructs the expression to optionally match the preceding item. That is if the item can be matched, do it, if not, match without it. So type 'str_extract(tokens, "the.?") %>% table' and see what happens.
+  CorrectAnswer: str_extract(tokens, "the.?") %>% table()
+  AnswerTests: omnitest(correctExpr='str_extract(tokens, "the.?") %>% table()')
+  Hint: Type 'str_extract(tokens, "the.?") %>% table()'.
+
+- Class: cmd_question
+  Output: We can also perform optional or alternative matches using brackets '[]'. Every
+    character inside brackets is considered a literal and is optionally matched -but
+    only one at a time. So if we want to find words that contain the pattern 't' then
+    some vowel then 's' we could type 'str_extract(tokens, ".*t[aeiou]s.*") %>% table()'.
+  CorrectAnswer: str_extract(tokens, ".*t[aeiou]s.*") %>% table()
+  AnswerTests: omnitest(correctExpr='str_extract(tokens, ".*t[aeiou]s.*") %>% table()')
+  Hint: Type 'str_extract(tokens, ".*t[aeiou]s.*") %>% table()'.
+
+- Class: cmd_question
+  Output: Combining metacharaters quickly increases the power of the Regular expression.
+    Say we want to find all occurences of contiguous vowels, we can add '+' to the end
+    of the bracket '[aeiou]' and then we will get sequences of vowels.
+    Try it, 'str_extract(tokens, "[aeiou]+") %>% table()'.
+  CorrectAnswer: str_extract(tokens, "[aeiou]+") %>% table()
+  AnswerTests: omnitest(correctExpr='str_extract(tokens, "[aeiou]+") %>% table()')
+  Hint: Type 'str_extract(tokens, "[aeiou]+") %>% table()'.
+
+- Class: cmd_question
+  Output: Notice that we get single vowels as well as sequences. To get a specific number
+    of repeated items we can use braces '{}'. Braces can take a single number '{2}' -exactly
+    two, a range '{2,3}' -two to three, or an open range '{2,}' -two or more. Let's find
+    sequences of vowels 2 or more. Type 'str_extract(tokens, "[aeiou]{2,}") %>% table()'
+  CorrectAnswer: str_extract(tokens, "[aeiou]{2,}") %>% table()
+  AnswerTests: omnitest(correctExpr='str_extract(tokens, "[aeiou]{2,}") %>% table()')
+  Hint: Type 'str_extract(tokens, "[aeiou]{2,}") %>% table()'.
+
+- Class: cmd_question
+  Output: Brackets '[]' only allow for single character alternatives. If we want to
+    have multiple character options we use parentheses '()'. Options are deliminated
+    by a pipe '|'. Let's find all words ending in 'ed' or 'ing'.
+    Type 'str_extract(tokens, ".*(ed|ing)$") %>% table()'.
+  CorrectAnswer: str_extract(tokens, ".*(ed|ing)$") %>% table()
+  AnswerTests: omnitest(correctExpr='str_extract(tokens, ".*(ed|ing)$") %>% table()')
+  Hint: Type 'str_extract(tokens, ".*(ed|ing)$") %>% table()'.
+
+- Class: text
+  Output: Up to this point we've been mixing literals and metacharacters for our
+    searches. But in some cases we need more abstract pattern searching. There are
+    a set of expressions available in Regular expressions to search character classes.
+    Here are a few.
+
+- Class: cmd_question
+  Output: To search for alphabetic characters we can use '[:alpha:]'. Type 'str_extract(tokens, "[:alpha:]") %>% table()'.
+  CorrectAnswer: str_extract(tokens, "[:alpha:]") %>% table()
+  AnswerTests: omnitest(correctExpr='str_extract(tokens, "[:alpha:]") %>% table()')
+  Hint: Type 'str_extract(tokens, "[:alpha:]") %>% table()'.
+
+- Class: cmd_question
+  Output: To search for digits we can use '[:digit:]'. Type 'str_extract(tokens, "[:digit:]") %>% table()'.
+  CorrectAnswer: str_extract(tokens, "[:digit:]") %>% table()
+  AnswerTests: omnitest(correctExpr='str_extract(tokens, "[:digit:]") %>% table()')
+  Hint: Type 'str_extract(tokens, "[:digit:]") %>% table()'.
+
+- Class: text
+  Output: Shorthand for '[:digit:]' is '\\d'.
+
+- Class: cmd_question
+  Output: To search for alpha-numeric characters we can use '[:alnum:]'. Type 'str_extract(tokens, "[:alnum:]") %>% table()'.
+  CorrectAnswer: str_extract(tokens, "[:alnum:]") %>% table()
+  AnswerTests: omnitest(correctExpr='str_extract(tokens, "[:alnum:]") %>% table()')
+  Hint: Type 'str_extract(tokens, "[:alnum:]") %>% table()'.
+
+- Class: text
+  Output: Shorthand for '[:alnum:]' is '\\w'.
+
+- Class: cmd_question
+  Output: To search for punctuation we can use '[:punct:]'. Type 'str_extract(tokens, "[:punct:]") %>% table()'.
+  CorrectAnswer: str_extract(tokens, "[:punct:]") %>% table()
+  AnswerTests: omnitest(correctExpr='str_extract(tokens, "[:punct:]") %>% table()')
+  Hint: Type 'str_extract(tokens, "[:punct:]") %>% table()'.
+
+- Class: text
+  Output: This has been a brief overview of the fundamentals of creating Regular expressions.
+    There are many more metacharacters available for pattern matching. Please consult our
+    Regular expressions cheatsheet for more information.
+

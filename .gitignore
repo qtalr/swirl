@@ -1,7 +1,21 @@
+# Project spaces
 .Rproj.user
 .Rhistory
 .Rdata
-.httr-oauth
-.DS_Store
-_*.*
 .vscode
+*.code-workspace
+*.Rproj
+
+# Authentication
+.httr-oauth
+
+# System files
+.DS_Store
+
+# Project directories
+_*
+swirl_temp/
+Test_course/
+
+# ------------------------
+TODO*

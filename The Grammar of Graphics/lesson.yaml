@@ -1,0 +1,187 @@
+- Class: meta
+  Course: swirl
+  Lesson: The Grammar of Graphics
+  Author: Jerid Francom
+  Type: Standard
+  Organization: WFU
+  Version: 1.0
+
+- Class: text
+  Output: In this lesson, you will learn the first steps to creating amazing graphics with R
+    using the 'Grammar of Graphics'.
+
+- Class: text
+  Output: "Don't forget that you can, temporarily, leave the lesson by typing play() and then
+    return by typing nxt()."
+
+- Class: cmd_question
+  Output: The Grammar of Graphics is an approach to creating graphics that is implemented in
+    the 'ggplot2' package. I've already downloaded the package, so to get started all we
+    need to do is load this package, type 'library(ggplot2)'.
+  CorrectAnswer: library(ggplot2)
+  AnswerTests: omnitest(correctExpr='library(ggplot2)')
+  Hint: "Type 'library(ggplot2)'."
+
+- Class: text
+  Output: The Grammar of Graphics recognizes that there are three principle components to any
+    graphic. 1. Data, 2. Mappings or 'aesthetics' as they are called, and 3. Geometries, or 'geoms'.
+
+- Class: cmd_question
+  Output: Data for a graphic need to be organized in a tabular fashion. The key object in R for
+    storing tabular data is the 'data frame'. As covered in a previous lesson, a data frame is
+    composed of rows and columns. The rows correspond to observations and the columns to variables.
+    Let's look at a data frame that is built into R, the 'iris' dataset. Type 'head(iris)', now.
+  CorrectAnswer: head(iris)
+  AnswerTests: omnitest(correctExpr='head(iris)')
+  Hint: Type 'head(iris)'.
+
+- Class: cmd_question
+  Output: The 'iris' dataset contains 150 measurements for three species of flowers, 50 observations
+    each. To see the vector types contained in the 'iris' dataset we can use the 'str()' function.
+    Type 'str(iris)' now.
+  CorrectAnswer: str(iris)
+  AnswerTests: omnitest(correctExpr='str(iris)')
+  Hint: Type 'str(iris)'.
+
+- Class: text
+  Output: Note that this data frame has four numeric variables and one 'Factor' variable - factors
+    are a special type of character vector. The types of variables we use in our plot play a large
+    role in how we will want to map them to a graph. These mappings form the second key component
+    to creating graphics.
+
+- Class: text
+  Output: What do we mean by 'mappings'? We connect certain variables, or columns, from our data set
+    to certain parameters in the visual space. Typical parameters include the 'x-axis' and the 'y-axis'.
+    The x-axis corresponds to the horizontal plane and the y-axis the vertical plane. This sets up a
+    coordinate system for visualizing the data.
+
+- Class: text
+  Output: With our data in hand and mappings in mind to connect to the coordinate space we now
+    look towards the specific way we want the graph to represent our data and mappings. This is
+    the job of the 'geoms'. Geoms control whether we see a line graph, a scatterplot, a bar graph,
+    etc. -depending on the appropriateness of the data and mappings we are working with.
+
+- Class: cmd_question
+  Output: Let's start to put this knowledge into action using the 'iris' data mapping the 'Species' variable
+    to the x-axis and the 'Petal.Length' to the y-axis. Type 'p <- ggplot(data = iris, aes(x = Species, y = Petal.Length))'.
+  CorrectAnswer: p <- ggplot(data = iris, aes(x = Species, y = Petal.Length))
+  AnswerTests: omnitest(correctExpr='p <- ggplot(data = iris, aes(x = Species, y = Petal.Length))')
+  Hint: Type 'p <- ggplot(data = iris, aes(x = Species, y = Petal.Length))'.
+
+- Class: cmd_question
+  Output: You will note that no graphic appeared. Well, we've assigned the output to the variable 'p'.
+    Typing 'p' will let us see what we've created so far. Do that now.
+  CorrectAnswer: p
+  AnswerTests: omnitest(correctExpr='p')
+  Hint: Type 'p'.
+
+- Class: cmd_question
+  Output: You will now see the coordinate system -but no plot! That's to be expected. So far we've
+    only specified the data and the mappings to use in this plot. To put the mappings into geometric
+    form we need to add a 'geom'. To add a points to the coordinate mappings in 'p' we can
+    type, 'p + geom_point()'. Do that now.
+  CorrectAnswer: p + geom_point()
+  AnswerTests: omnitest(correctExpr='p + geom_point()')
+  Hint: Type 'p + geom_point()'.
+
+- Class: text
+  Output: You have greated your first graphic applying the principles of the Grammar of Graphics!
+    What is so powerful and flexible about this system is that you can now recycle the data and
+    mappings in 'p' and apply a different geom or combination of geoms.
+
+- Class: cmd_question
+  Output: Let's create a box plot with the data and mappings in 'p'. Type 'p + geom_boxpot()'.
+  CorrectAnswer: p + geom_boxplot()
+  AnswerTests: omnitest(correctExpr='p + geom_boxplot()')
+  Hint: Type 'p + geom_boxplot()'.
+
+- Class: text
+  Output: A box plot uses the same data and mappings and displays them in a new geometric space.
+    This space provides visual cues to the distribution of the y-axis variable, 'Petal.Length' for
+    each of the unique values of the x-axis variable, 'Species'. If you are curious, the box
+    corresponds to the standard deviation range of the values of 'Petal.Length', the bold bar in
+    the middle of the box is the mean of the values, and the points correspond to outliers in the
+    data. Pretty informative for one geom!
+
+- Class: cmd_question
+  Output: Now let's create a bar graph with the data and mappings in 'p'. Type 'p + geom_bar(stat = "identity")'.
+  CorrectAnswer: p + geom_bar(stat = "identity")
+  AnswerTests: omnitest(correctExpr='p + geom_bar(stat = "identity")')
+  Hint: Type 'p + geom_bar(stat = "identity")'.
+
+- Class: text
+  Output: This example demonstrates that are functions in their own right and can take, and sometimes require, arguments
+    to complete their task. In this last case the 'geom_bar()' geom requires a 'stat' argument.
+    The 'stat' argument specifies how to group the y-axis mappings in order create a bar graph.
+    Don't worry about the details about 'stat = "identity"' for the moment, it's enough just to
+    be aware that some geoms may require arguments.
+
+- Class: text
+  Output: The specific mappings we create to our variables will dictate the types of geometric
+    forms our graph can take. In 'p' we mapped a factor vector to the x-axis and a numeric vector
+    to the y-axis. It makes sense, then, to represent the data in certain ways. In particular box
+    plots or bar graphs. But other mapping types won't make much sense in these forms -and these
+    mappings might not make sense in other forms either.
+
+- Class: cmd_question
+  Output: For example, let's change the mappings and create a new coordinate space. This time let's
+    map two numeric variables, 'Petal.Length' and 'Petal.Width' to x and y, respectively.
+    Enter 'p2 <- ggplot(data = iris, aes(x = Petal.Length, y = Petal.Width))'.
+  CorrectAnswer: p2 <- ggplot(data = iris, aes(x = Petal.Length, y = Petal.Width))
+  AnswerTests: omnitest(correctExpr='p2 <- ggplot(data = iris, aes(x = Petal.Length, y = Petal.Width))')
+  Hint: Type 'p2 <- ggplot(data = iris, aes(x = Petal.Length, y = Petal.Width))'.
+
+- Class: cmd_question
+  Output: Now type 'p2' and hit enter to see the coordinate space.
+  CorrectAnswer: p2
+  AnswerTests: omnitest(correctExpr='p2')
+  Hint: Type 'p2'.
+
+- Class: cmd_question
+  Output: To add points to the geometric space we again use 'geom_point()'. Type 'p2 + geom_point()'.
+  CorrectAnswer: p2 + geom_point()
+  AnswerTests: omnitest(correctExpr='p2 + geom_point()')
+  Hint: Type 'p2 + geom_point()'.
+
+- Class: cmd_question
+  Output: The points in this graphic correspond to each flower observation's petal length and petal
+    width. This type of mapping makes sense in this format -but wouldn't make sense in a bar graph or
+    a box plot as we are not grouping data anymore. When mapping numeric variables into geometric space
+    is is also sometimes informative to see a line summarizing the relationship between points.
+    The 'geom_smooth()' geom does this.  Type this command and observe the output, 'p2 + geom_point() + geom_smooth()'.
+  CorrectAnswer: p2 + geom_point() + geom_smooth()
+  AnswerTests: omnitest(correctExpr='p2 + geom_point() + geom_smooth()')
+  Hint: Type 'p2 + geom_point() + geom_smooth()'.
+
+- Class: text
+  Output: So what have we done. We've combined geoms in one command. Combinations of geoms are a powerful
+    way of 'layering' graphical elements on a geometric space.
+
+
+- Class: cmd_question
+  Output: Now stepping back a moment, let's return to our mappings. In 'p2' we specified numeric vectors to the x and y axis. There are, however, more mappings at our disposal which can enhance the expressive power of geoms applied to the coordinate space. To see this in action let's add a 'color' mapping. We'll also add the 'geom_point()' geom to our plotting object in one step. Type 'p3 <- ggplot(data = iris, aes(x = Petal.Length, y = Petal.Width, color = Species)) + geom_point()'.
+  CorrectAnswer: p3 <- ggplot(data = iris, aes(x = Petal.Length, y = Petal.Width, color = Species)) + geom_point()
+  AnswerTests: omnitest(correctExpr='p3 <- ggplot(data = iris, aes(x = Petal.Length, y = Petal.Width, color = Species)) + geom_point()')
+  Hint: Type 'p3 <- ggplot(data = iris, aes(x = Petal.Length, y = Petal.Width, color = Species)) + geom_point()'.
+
+- Class: cmd_question
+  Output: Type 'p3' to view our plot.
+  CorrectAnswer: p3
+  AnswerTests: omnitest(correctExpr='p3')
+  Hint: Type 'p3'.
+
+- Class: cmd_question
+  Output: Our plot now graphically reflects three types of mappings, x, y, and color. The 'color' mapping creates color based on the 'Species' variable and a legend is created automatically. Since these mappings are available to subsequent geoms, let's apply the 'geom_smooth()' geom to the 'p3' object and see what happens. Type 'p3 + geom_smooth()'.
+  CorrectAnswer: p3 + geom_smooth()
+  AnswerTests: omnitest(correctExpr='p3 + geom_smooth()')
+  Hint: Type 'p3 + geom_smooth()'.
+
+- Class: text
+  Output: Our 'color' mapping groups the line summaries created by the 'geom_smooth()'. Pretty powerful stuff!
+
+- Class: text
+  Output: This is the end of our introduction to the Grammar of Graphics and the 'ggplot2' package.
+    There is much more to learn and play with. We will continue to work with graphing throughout the
+    course as visualization is one of the most important aspects of data analysis. In the process you
+    will acquire a better understanding of the concepts briefly introduced here.
+

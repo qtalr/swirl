@@ -1,0 +1,58 @@
+- Class: meta
+  Course: swirl
+  Lesson: Intro to swirl 
+  Author: Jerid Francom
+  Type: Standard
+  Organization: WFU
+  Version: 1.0
+
+- Class: text
+  Output: "Hello and welcome to Swirl. This lesson is a quick tutorial/ test to get you
+    familiar with swirl exercises."
+
+- Class: text
+  Output: "Swirl is an interactive R coding tutorial system. There are various types of
+    information that you will encounter. There are text blocks, like this one..."
+
+- Class: cmd_question
+  Output: "Or coding questions, like this one, in which you will be asked to complete a
+    small fragment of code. So, for example, let's use R to do some quick addition. Type '1+1'
+    and hit Enter at the prompt '>' below."
+  CorrectAnswer: 1 + 1
+  AnswerTests: omnitest(correctExpr='1 + 1')
+  Hint: Type 1 + 1 and press Enter. 
+
+- Class: text
+  Output: "If you do it correctly, you will get a nice message. If not, then you will be
+    provided a hint --this hint often includes what you need to type to get it right."
+
+- Class: cmd_question
+  Output: "Let's do this command wrong this time. So, imagine we were asked to type '1+1'
+    and hit Enter, but instead we entered '1 + 2' on accident. Do that now and see what
+    happens."
+  CorrectAnswer: 1 + 1
+  AnswerTests: omnitest(correctExpr='1 + 1')
+  Hint: Type 1 + 1 and press Enter. That's your hint, go ahead and type it correctly
+    to move on to the next question.
+
+- Class: text
+  Output: Another type of question you will get is a multiple choice question.
+
+- Class: mult_question
+  Output: Which statement do you think is true?
+  CorrectAnswer: The first day of classes is Tuesday
+  AnswerChoices: The first day of classes is Monday; The first day of classes is Tuesday; The first day of classes is Wednesday
+  AnswerTests: omnitest(correctVal='The first day of classes is Tuesday')
+  Hint: Tuesday, of course. ;)
+
+- Class: text
+  Output: "Don't forget that you can, temporarily, leave the lesson by typing play() and then
+    return by typing nxt()."
+
+- Class: text
+  Output: "play() and nxt() are really helpful if you want to stop the tutorial for a moment
+    and play with R a bit before continuing on with the lesson!"
+
+- Class: text
+  Output: "That does it for this pre-lesson. I just wanted to give you a quick introduction
+    to Swirl. I hope you like it."

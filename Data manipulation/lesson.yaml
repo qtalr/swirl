@@ -1,0 +1,216 @@
+- Class: meta
+  Course: swirl
+  Lesson: Data manipulation
+  Author: Jerid Francom
+  Type: Standard
+  Organization: WFU
+  Version: 1.0
+
+- Class: text
+  Output: In this lesson, you will learn more about data frame objects in R and how to
+    manipulate them using the `dplyr` package.
+
+- Class: text
+  Output: "Don't forget that you can, temporarily, leave the lesson by typing play() and then
+    return by typing nxt()."
+
+- Class: cmd_question
+  Output: We have worked with data frame objects in a previous lesson. Recall that a data frame is just a collection of vectors of the same length -where columns correspond to variables and rows to observations. One standard way of finding the dimensions of a data frame is to use the `dim()` function. I've loaded a data frame called `belc`. Find the dimensions now.
+  CorrectAnswer: dim(belc)
+  AnswerTests: omnitest(correctExpr='dim(belc)')
+  Hint: Type 'dim(belc)'.
+
+- Class: mult_question
+  Output: How many rows are in the `belc` dataset?
+  AnswerChoices: 126;5;1
+  CorrectAnswer: 126
+  AnswerTests: omnitest(correctVal= '126')
+  Hint: Remember the output of `dim()` gives rows first, columns second!
+
+- Class: cmd_question
+  Output: Now view the structure of the `belc` dataset using `str()`.
+  CorrectAnswer: str(belc)
+  AnswerTests: omnitest(correctExpr='str(belc)')
+  Hint: Type 'str(belc)'.
+
+- Class: mult_question
+  Output: What vector type is the 'group' column?
+  AnswerChoices: Character;Numeric;Factor;Logical
+  CorrectAnswer: Character
+  AnswerTests: omnitest(correctVal= 'Character')
+  Hint: It's a 'chr' or 'Character' vector.
+
+- Class: cmd_question
+  Output: The standard data frame object, like the current `belc` object, is the workhorse of data analysis. As such, you will find yourself using `dim()`, `str()`, `head()`, etc. quite often to view the rows and columns in your data. The `dplyr` package makes working with data frames more convenient with a extended data frame type called the 'tibble'. Convert the `belc` data frame to a tibble by running 'belc <- tbl_df(belc)' now.
+  CorrectAnswer: belc <- tbl_df(belc)
+  AnswerTests: omnitest(correctExpr='belc <- tbl_df(belc)')
+  Hint: Type 'belc <- tbl_df(belc)'.
+
+- Class: cmd_question
+  Output: Now view the changes by simply typing `belc` and hitting Enter on your keyboard.
+  CorrectAnswer: belc
+  AnswerTests: omnitest(correctExpr='belc')
+  Hint: Type 'belc'.
+
+- Class: text
+  Output: You will notice a few things about this output -first, the dimensions are provided, second, the vector type of each column is clearly listed above the column data, and third, not all rows and columns are shown. This third point turns out to be quite convenient as we often work with large datasets which can sprawl across the screen if we accidently print the object to the screen. Tibble objects automatically restrict the output to fit on the screen.
+
+- Class: cmd_question
+  Output: The real power of the `dplyr` package, however, comes in terms of manipulating tabular data. Let's start with the function `arrange()` which sorts data frames, and tibbles, of course. `arrange()` takes a data frame as the primary argument and any number of specified columns as other arguments. The column names are used for the sort order. Type 'arrange(belc, age)' to see this in action.
+  CorrectAnswer: arrange(belc, age)
+  AnswerTests: omnitest(correctExpr='arrange(belc, age)')
+  Hint: Type 'arrange(belc, age)'.
+
+- Class: cmd_question
+  Output: To sort, or arrange, the `belc` object by 'age' and 'group' just add that column name to the argument list. Type 'arrange(belc, age, group)'.
+  CorrectAnswer: arrange(belc, age, group)
+  AnswerTests: omnitest(correctExpr='arrange(belc, age, group)')
+  Hint: Type 'arrange(belc, age, group)'.
+
+- Class: cmd_question
+  Output: To sort any column in reverse, or descending, order just wrap the column name with the function 'desc()'. Wrap the 'age' column in the previous sort with 'desc()' now.
+  CorrectAnswer: arrange(belc, desc(age), group)
+  AnswerTests: omnitest(correctExpr='arrange(belc, desc(age), group)')
+  Hint: Type 'arrange(belc, desc(age), group)'.
+
+- Class: text
+  Output: When working with tabular data it is often the case that we want to work with or view a subset of the data. To subset by rows we use the `filter()` function and to get a subset of columns we use the `select()` function. We can even combine them using 'piping' to get more complex subsets.
+
+- Class: cmd_question
+  Output: Let's filter the `belc` dataset by rows retrieving only those rows where the 'group' column is equal to '1B'. Type 'filter(belc, group == "1B")'.
+  CorrectAnswer: filter(belc, group == "1B")
+  AnswerTests: omnitest(correctExpr='filter(belc, group == "1B")')
+  Hint: Type 'filter(belc, group == "1B")'.
+
+- Class: cmd_question
+  Output: The `filter()` function takes a dataset and a logical condition. The previous logical condition was `group == "1B"`. Yet any logical expression will work here. Let's use a `stringr` package function `str_detect()` on the 'group' column this time and find all rows that contain the letter 'A'. Let's do this an overwrite our existing `belc` object with this new subsetted dataset. Type 'belc <- filter(belc, str_detect(group, "A"))'.
+  CorrectAnswer: belc <- filter(belc, str_detect(group, "A"))
+  AnswerTests: omnitest(correctExpr='belc <- filter(belc, str_detect(group, "A"))')
+  Hint: Type 'belc <- filter(belc, str_detect(group, "A"))'.
+
+- Class: cmd_question
+  Output: To get a subset of columns we use the `select()` function. `select()` takes a dataset and the names of the columns to return, each separated by a comma. Select the 'age' and 'sex' columns from the `belc` dataset now.
+  CorrectAnswer: select(belc, age, sex)
+  AnswerTests: omnitest(correctExpr='select(belc, age, sex)')
+  Hint: Type 'select(belc, age, sex)'.
+
+- Class: cmd_question
+  Output: To save some typing you can use the `:` operator and select a range of columns. Let's see this, type 'select(belc, age:group)'.
+  CorrectAnswer: select(belc, age:group)
+  AnswerTests: omnitest(correctExpr='select(belc, age:group)')
+  Hint: Type 'select(belc, age:group)'.
+
+- Class: cmd_question
+  Output: You can also 'de-select' columns, if that is easier, by using the `-` operator before the name of the column you want to leave out. Type 'select(belc, -id)'.
+  CorrectAnswer: select(belc, -id)
+  AnswerTests: omnitest(correctExpr='select(belc, -id)')
+  Hint: Type 'select(belc, -id)'.
+
+- Class: text
+  Output: So far we've used `dplyr` to sort and subset datasets. Let's look at how this package helps us create columns in our dataset.
+
+- Class: cmd_question
+  Output: Say we want to create a new column called 'years' that contains the age of each participant in years only. Our current 'age' column has years, months, and days grouped together. We can use R's `substring()` function to extract only the first two characters of each row of the 'age' column. If we want to add this data to a new 'years' column in the `belc` dataset we use the dplyr function `mutate()`. Type 'belc <- mutate(belc, years = substring(age, 1, 2))'.
+  CorrectAnswer: belc <- mutate(belc, years = substring(age, 1, 2))
+  AnswerTests: omnitest(correctExpr='belc <- mutate(belc, years = substring(age, 1, 2))')
+  Hint: Type 'belc <- mutate(belc, years = substring(age, 1, 2))'.
+
+- Class: cmd_question
+  Output: Note that we've overwritten our previous `belc` dataset with this new dataset that includes the 'years' column. Let's use 'select()' to view all columns except the 'texts' column. Type 'select(belc, -texts)'.
+  CorrectAnswer: select(belc, -texts)
+  AnswerTests: omnitest(correctExpr='select(belc, -texts)')
+  Hint: Type 'select(belc, -texts)'.
+
+- Class: cmd_question
+  Output: It worked! But let's make a quick change to the vector type of the 'years' column. As it is it is a character vector. That doesn't make much sense for a numerical value -and will make it impossible for us to find, say, the average age of the participants. To change the column type we convert the column like so 'belc$years <- as.numeric(belc$years)'.
+  CorrectAnswer: belc$years <- as.numeric(belc$years)
+  AnswerTests: omnitest(correctExpr='belc$years <- as.numeric(belc$years)')
+  Hint: Type 'belc$years <- as.numeric(belc$years)'.
+
+- Class: cmd_question
+  Output: Type 'belc' and look on the last line. You will see that the 'years' column is a '<dbl>', or 'double' -which is just a type of numeric vector.
+  CorrectAnswer: belc
+  AnswerTests: omnitest(correctExpr='belc')
+  Hint: Type 'belc'.
+
+- Class: cmd_question
+  Output: We're going to create a couple more columns based on the `belc` dataset but before we do let's take a look at the 'texts' column. Type 'select(belc, texts)'.
+  CorrectAnswer: select(belc, texts)
+  AnswerTests: omnitest(correctExpr='select(belc, texts)')
+  Hint: Type 'select(belc, texts)'.
+
+- Class: text
+  Output: On the screen you will see one or two rows from the column 'texts' -depending on the size of your screen, remember the tibble object only prints what will fit comfortably on the screen.
+
+- Class: text
+  Output: In the 'texts' column is the text from the BELC corpus narratives -a corpus of non-native English. The text has been cleaned and annotated for the language of each word. English words have the '/eng' tag, non-English is marked with '/other'.
+
+- Class: cmd_question
+  Output: For fun, let's say we are working with a study in which we would like to know how many English words each participant used in their narrative. We can turn to the `stringr` package to count the occurrences of a specific pattern, in this case "/eng". Type 'str_count(belc$texts, "/eng")'.
+  CorrectAnswer: str_count(belc$texts, "/eng")
+  AnswerTests: omnitest(correctExpr='str_count(belc$texts, "/eng")')
+  Hint: Type 'str_count(belc$texts, "/eng")'.
+
+- Class: cmd_question
+  Output: With this function in hand we can create a new column in our `belc` dataset with `mutate()`. Type 'belc <- mutate(belc, eng.words = str_count(belc$texts, "/eng"))'.
+  CorrectAnswer: belc <- mutate(belc, eng.words = str_count(belc$texts, "/eng"))
+  AnswerTests: omnitest(correctExpr='belc <- mutate(belc, eng.words = str_count(belc$texts, "/eng"))')
+  Hint: Type 'belc <- mutate(belc, eng.words = str_count(belc$texts, "/eng"))'.
+
+- Class: cmd_question
+  Output: Let's use 'select()' to view all columns except the 'texts' column. Type 'select(belc, -texts)'.
+  CorrectAnswer: select(belc, -texts)
+  AnswerTests: omnitest(correctExpr='select(belc, -texts)')
+  Hint: Type 'select(belc, -texts)'.
+
+- Class: cmd_question
+  Output: Now add a new column called 'all.words' in the same way that counts words tagged as English and non-English. Your `str_count()` will look like this 'str_count(belc$texts, "/(eng|other)")'.
+  CorrectAnswer: belc <- mutate(belc, all.words = str_count(belc$texts, "/(eng|other)"))
+  AnswerTests: omnitest(correctExpr='belc <- mutate(belc, all.words = str_count(belc$texts, "/(eng|other)"))')
+  Hint: Type 'belc <- mutate(belc, all.words = str_count(belc$texts, "/(eng|other)"))'.
+
+- Class: cmd_question
+  Output: Let's drop the 'age' and 'texts' columns now using 'select()' and the `-` operator. And assign the result to `belc`.
+  CorrectAnswer: belc <- select(belc, -age, -texts)
+  AnswerTests: omnitest(correctExpr='belc <- select(belc, -age, -texts)')
+  Hint: Type 'belc <- select(belc, -age, -texts)'.
+
+- Class: cmd_question
+  Output: Preview the resulting dataset by typing 'belc'.
+  CorrectAnswer: belc
+  AnswerTests: omnitest(correctExpr='belc')
+  Hint: Type 'belc'.
+
+- Class: cmd_question
+  Output: Another powerful function in the `dplyr` package is `group_by()`. `group_by()` creates a temporary grouping of the data that allows us to apply some operation iteratively over the values of a column. Say we want to find the average age, in years, for the participants for each of our groups in the column 'group'. You type 'group_by(belc, group) %>% mutate(mean.years = mean(years))'.
+  CorrectAnswer: group_by(belc, group) %>% mutate(mean.years = mean(years))
+  AnswerTests: omnitest(correctExpr='group_by(belc, group) %>% mutate(mean.years = mean(years))')
+  Hint: Type 'group_by(belc, group) %>% mutate(mean.years = mean(years))'.
+
+- Class: cmd_question
+  Output: Notice we've piped the grouping done by `group_by()` to the `mutate()` function with the argument 'mean.years = mean(years)'. This means that each group (1A, 2A, 3A, 4A) is grouped and then the values are created. The mean score is then returned for each participant according to the group they are in. Repeat the command we just ran, but now assign it to `belc` to update our dataset.
+  CorrectAnswer: belc <- group_by(belc, group) %>% mutate(mean.years = mean(years))
+  AnswerTests: omnitest(correctExpr='belc <- group_by(belc, group) %>% mutate(mean.years = mean(years))')
+  Hint: Type 'belc <- group_by(belc, group) %>% mutate(mean.years = mean(years))'.
+
+- Class: text
+  Output: Now the repeated values in 'mean.years' may seem redundant. But this is exactly the type of format that will lend itself to statistical analysis -stay tuned for a future lesson!
+
+- Class: text
+  Output: For visual inspection, however, including plotting, sometimes it is better to summarize these values. `dplyr` has a function for just this. It's called `summarise()`. `summarise()` works much like `mutate()` but requires a `group_by()` function to provide the grouping variable (or variables), and some function or operation to apply to the grouped data.
+
+- Class: cmd_question
+  Output: Let's again find the average age in years for each participant group. This time let's summarize the results with `summarise()`. Type 'group_by(belc, group) %>% summarise(mean.years = mean(years))'.
+  CorrectAnswer: group_by(belc, group) %>% summarise(mean.years = mean(years))
+  AnswerTests: omnitest(correctExpr='group_by(belc, group) %>% summarise(mean.years = mean(years))')
+  Hint: Type 'group_by(belc, group) %>% summarise(mean.years = mean(years))'.
+
+- Class: cmd_question
+  Output: We can group data by more than one column in a dataset. Try 'group_by(belc, group, years) %>% summarise(mean.eng.words = mean(eng.words))'.
+  CorrectAnswer: group_by(belc, group, years) %>% summarise(mean.eng.words = mean(eng.words))
+  AnswerTests: omnitest(correctExpr='group_by(belc, group, years) %>% summarise(mean.eng.words = mean(eng.words))')
+  Hint: Type 'group_by(belc, group, years) %>% summarise(mean.eng.words = mean(eng.words))'.
+
+- Class: text
+  Output: That wraps up this lesson on data manipulation with the `dplyr` package. The functions we covered here are the most common ones you will encounter and use -but there are many more that do a range of useful tasks!
+

@@ -1,0 +1,216 @@
+- Class: meta
+  Course: swirl
+  Lesson: Objects
+  Author: Jerid Francom
+  Type: Standard
+  Organization: WFU
+  Version: 1.0
+
+- Class: text
+  Output: In this lesson, you will be introduced to the main types of objects that
+    we'll work with in R.
+
+- Class: text
+  Output: "Don't forget that you can, temporarily, leave the lesson by typing play() and then
+    return by typing nxt()."
+
+- Class: text
+  Output: You've already worked with a key object in R, the vector, in an earlier
+    Swirl coding exercise. In this lesson, we will look a little deeper into vectors
+    and see another set of objects that are fundamental to understand to be able to
+    work effectively in R.
+
+- Class: cmd_question
+  Output: As you remember, we created a vector using the function c() and a series
+    of numbers separated by ','. Let's refresh your coding memory. Create a vector
+    that contains the four elements '1,2,3,4' with c().
+  CorrectAnswer: c(1,2,3,4)
+  AnswerTests: omnitest(correctExpr = 'c(1,2,3,4)')
+  Hint: Type 'c(1,2,3,4)'
+
+- Class: text
+  Output: As we will see in R, there are often multiple ways to do the same thing.
+    In the case of creating 'numerical' vectors, we can also use two other methods.
+
+- Class: cmd_question
+  Output: One alternative to 'c()' uses the ':' operator which allows us to specify
+    the start and end of the vector like so '1:4', and the intermediate values are
+    filled in for us. Type '1:4' to see this function in action.
+  CorrectAnswer: 1:4
+  AnswerTests: omnitest('1:4')
+  Hint: Type 1:4
+
+- Class: cmd_question
+  Output: Another way to create a numerical vector is to use the function, 'seq()'.
+    'seq()' can be used with one argument which specifies the largest number in the
+    vector, like so 'seq(4). Create a numerical vector with 'seq()' now.
+  CorrectAnswer: seq(4)
+  AnswerTests: omnitest('seq(4)')
+  Hint: Type seq(4)
+
+- Class: cmd_question
+  Output: Let's go ahead and create a numerical vector which contains the numerals
+    '1, 2, 3, 4' and assign the output to the variable 'x'. Use one of the previous
+    methods for creating a numerical vector.
+  CorrectAnswer: x <- 1:4
+  AnswerTests: any_of_exprs('x <- c(1,2,3,4)', 'x <- 1:4', 'x <- seq(4)')
+  Hint: Type either 'x <- c(1,2,3,4)', 'x <- 1:4', or 'x <- seq(4)'.
+
+- Class: text
+  Output: Numerical vectors are only one type of vectors. Two other types of key
+    vectors you will use in R are character and logical vectors.
+
+- Class: cmd_question
+  Output: To create a character vector we use the c() function as we did originally
+    for numerical vectors, but now the elements need to be enclosed in quotes ".
+    Create a character vector now by typing 'c("This", "is", "a", "sentence.")'.
+  CorrectAnswer: c("This", "is", "a", "sentence.")
+  AnswerTests: omnitest('c("This", "is", "a", "sentence.")')
+  Hint: Type 'c("This", "is", "a", "sentence.")'
+
+- Class: cmd_question
+  Output: Now assign the output of the previous vector you created to a variable
+    named 'y'. Note you can use the up-arrow on your keyboard to avoid retyping
+    the operation and then add 'y <-' at the beginning for the assignment.
+  CorrectAnswer: y <- c("This", "is", "a", "sentence.")
+  AnswerTests: omnitest('y <- c("This", "is", "a", "sentence.")')
+  Hint: Type 'y <- c("This", "is", "a", "sentence.")'
+
+- Class: cmd_question
+  Output: The final type of vector we will look at in this lesson is the logical
+    vector. Logical vectors contain either TRUE or FALSE, hence logical vector.
+    No quotes are used as the values. Type 'c(TRUE, FALSE, FALSE, TRUE)' and
+    assign it to the variable 'z' now.
+  CorrectAnswer: z <- c(TRUE, FALSE, FALSE, TRUE)
+  AnswerTests: omnitest('z <- c(TRUE, FALSE, FALSE, TRUE)')
+  Hint: Type 'z <- c(TRUE, FALSE, FALSE, TRUE)'.
+
+- Class: cmd_question
+  Output: A helpful function to find out about what type of vector, or any other
+    object, we have is the function 'class()'. Use the variable 'x' and find out
+    the class or type of vector it is.
+  CorrectAnswer: class(x)
+  AnswerTests: omnitest('class(x)')
+  Hint: Type 'class(x)'.
+
+- Class: cmd_question
+  Output: Now find out what type of object the vector 'y' is using 'class()'.
+  CorrectAnswer: class(y)
+  AnswerTests: omnitest('class(y)')
+  Hint: Type 'class(y)'.
+
+- Class: cmd_question
+  Output: Now find out what type of object the vector 'z' is using 'class()'.
+  CorrectAnswer: class(z)
+  AnswerTests: omnitest('class(z)')
+  Hint: Type 'class(z)'.
+
+- Class: text
+  Output: "The 'class()' function is an introspection function. That is, it's primary
+    job is not to do some operation, but rather to give the user some information
+    about the how to use the object. Another introspection operation we saw was
+    the '?' before functions. There are other introspection function that we will
+    see that will provide other information about objects that is useful for getting
+    a better understanding about our data. For now, let's get back to objects!"
+
+- Class: text
+  Output: One thing about vectors that is notable is that they are of one type and
+    never mix types within the same vector. So, if you try to mix numeric values
+    with character values in the same vector, like 'c(1,2,3, "hello")' you will get
+    an error.
+
+- Class: cmd_question
+  Output: You can, however, quote the numerals in the previous code changing the
+    numbers into characters and that is just fine. Type 'c("1", "2", "3", "hello")'
+    now just to confirm for yourself.
+  CorrectAnswer: c("1", "2", "3", "hello")
+  AnswerTests: omnitest('c("1", "2", "3", "hello")')
+  Hint: Type 'c("1", "2", "3", "hello")'
+
+- Class: cmd_question
+  Output: Another property of vectors is that they are one dimensional. We can find
+    out how long, that is how many elements there are in the vector, with the
+    function 'length()'. Use 'length()' to find out how many elements the vector
+    'x' has.
+  CorrectAnswer: length(x)
+  AnswerTests: omnitest('length(x)')
+  Hint: Type 'length(x)'
+
+
+- Class: mult_question
+  Output: What is the length of the vector 'x'?
+  AnswerChoices: 1;4;8
+  CorrectAnswer: 4
+  AnswerTests: omnitest(correctVal= '4')
+  Hint: The length of the vector 'x' is 4!
+
+- Class: text
+  Output: Another key object type in R is the data frame. A data frame is really
+    just a grouping of vectors allowing us to store multiple vectors in one object.
+    The vectors, however, must have the same length as they are held in rows and
+    columns much like the grid you see when you work with a spreadsheet program
+    like Excel.
+
+- Class: cmd_question
+  Output: Let's create a data frame using the vectors 'x' and 'y' from before. Type
+    'data.frame(x, y)' and see what happens.
+  CorrectAnswer: data.frame(x, y)
+  AnswerTests: omnitest(correctExpr='data.frame(x, y)')
+  Hint: Type 'data.frame(x, y)'.
+
+- Class: cmd_question
+  Output: Now, let's assign the output of the previous operation to the variable 'df.a'
+  CorrectAnswer: df.a <- data.frame(x, y)
+  AnswerTests: omnitest(correctExpr='df.a <- data.frame(x, y)')
+  Hint: Type 'df.a <- data.frame(x, y)'.
+
+- Class: cmd_question
+  Output: Now find the type of object that 'df.a' is with 'class()'.
+  CorrectAnswer: class(df.a)
+  AnswerTests: omnitest(correctExpr='class(df.a)')
+  Hint: Type 'class(df.a)'.
+
+- Class: cmd_question
+  Output: As mentioned before a data frame is a grouping of vectors and therefore
+    no longer is one dimensional --and cannot be measured in length. We use the
+    'dim()' function to find the dimensions of the data frame. Find the dimensions
+    of our data frame 'df.a' now.
+  CorrectAnswer: dim(df.a)
+  AnswerTests: omnitest(correctExpr='dim(df.a)')
+  Hint: Type 'dim(df.a)'
+
+- Class: text
+  Output: The output from 'dim(df.a)' returns a numerical vector with two elements.
+    The first always corresponds to the number of rows and the second the number of
+    columns. Remember this point.
+
+- Class: cmd_question
+  Output: Say we want to retrieve one of the original vectors from the data frame
+    and work with it in isolation. R provides syntax to do just that. All you need
+    to do is use the data frame object's name followed by a '$' symbol and then
+    the name of the vector. Type 'df.a$x' and see what happens.
+  CorrectAnswer: df.a$x
+  AnswerTests: omnitest(correctExpr='df.a$x')
+  Hint: Type 'df.a$x'
+
+- Class: cmd_question
+  Output: Combining the knowledge you have of vectors and data frames, how would you find the length of the 'y' column from the data frame 'df.a'? Type the command now.
+  CorrectAnswer: length(df.a$y)
+  AnswerTests: omnitest(correctExpr='length(df.a$y)')
+  Hint: Type 'length(df.a$y)'.
+
+- Class: mult_question
+  Output: What object type will the command 'class(df.a$x)' return?
+  AnswerChoices: data.frame;numeric;integer;character;logical
+  CorrectAnswer: numeric
+  AnswerTests: val_matches('numeric|integer')
+  Hint: It's either 'numeric' or 'integer' depending on which method you created
+    the 'x' vector.
+
+- Class: text
+  Output: That completes this lesson on objects. You've learned quite a bit about
+    vectors and data frames. These two objects will be our primary workhorses for
+    data analysis so you've got a solid start! Spend some time playing with them on
+    your own and reading up on the documentation online or with the '?' command.
+
+

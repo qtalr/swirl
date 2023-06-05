@@ -1,0 +1,275 @@
+- Class: meta
+  Course: swirl
+  Lesson: Supervised learning
+  Author: Jerid Francom
+  Type: Standard
+  Organization: WFU
+  Version: 1.0
+
+- Class: text
+  Output: In this lesson, you will learn how to implement the Naive Bayes Classification algorithm.
+    Naive Bayes is very popular classification algorithm used generally, and specifically
+    in text classification. In this lesson we will learn to prepare, train, apply, and evaluate
+    a Naive Bayes Classification model.
+
+- Class: text
+  Output: "Don't forget that you can, temporarily, leave the lesson by typing play() and then
+    return by typing nxt()."
+
+- Class: text
+  Output: In this lesson we will apply Naive Bayes to the 'verbs' dataset from the 'languageR' package.
+
+- Class: cmd_question
+  Output: Let's take a look at the data description provided about the data using the command '?verbs'.
+  CorrectAnswer: ?verbs
+  AnswerTests: omnitest(correctExpr="?verbs")
+  Hint: Type '?verbs'.
+
+- Class: mult_question
+  Output: Looking at the data description, how many observations are in the 'verbs' dataset?
+  AnswerChoices: 5;903;500
+  CorrectAnswer: 903
+  AnswerTests: omnitest(correctVal= '903')
+  Hint: Look at the information under the 'Format' section of the data description.
+
+- Class: mult_question
+  Output: Again looking at the data description, which of the 5 variables is *not* a factor vector?
+  AnswerChoices: RealizationOfRec;AnimacyOfTheme;LengthOfTheme
+  CorrectAnswer: LengthOfTheme
+  AnswerTests: omnitest(correctVal= 'LengthOfTheme')
+  Hint: Look at the information for each variable name in the data description, only one is not a factor.
+
+- Class: cmd_question
+  Output: I've pre-loaded this dataset for this lesson. Let's take a look at the dataset 'verbs' using the
+    function 'head()'.
+  CorrectAnswer: head(verbs)
+  AnswerTests: omnitest(correctExpr='head(verbs)')
+  Hint: Type 'head(verbs)'.
+
+- Class: text
+  Output: The 'verbs' data frame includes 5 variables that characterize 903 instances of sentences known
+    as ditransitives. Ditransitives are sentences where the main clause verb takes two arguments, a theme and a recipient.
+    For example, in the sentence 'John gives Mary the ball.' the verb 'give' has two arguments 'Mary' (recipient) and 'the ball' (theme).
+    Other common ditransitive verbs are 'send', 'offer', 'lend', etc.
+
+- Class: text
+  Output: There are two types of ditransitives in English. One where the recipient realized with a preposition (PP)
+    such as 'John gave the ball to Mary' and one where the recipient is realized only as a noun phrase (NP) as
+    in the first example 'John gives Mary the ball'. Each of the 903 observations is one of the two types and
+    this characteristic is given in the variable 'RealizationofRec' in the 'verbs' data frame.
+
+- Class: text
+  Output: Now, the other 4 variables are other characteristics which have been provided for each of the
+    observations. In this lesson we are going to attempt to leverage these characteristics as predictors to
+    predict the type of ditransitive 'RealizationofRec' (NP or PP).
+
+- Class: text
+  Output: In other words we are going to build a machine learning model that aims to predict one of two
+    outcomes NP or PP based on the predictors 'Verb', 'AnimacyOfRec', 'AnimacyOfTheme', and 'LengthOfTheme'.
+    First we will split the 'verbs' data frame into training and testing datasets maintaining relatively similar
+    distributions of the NP or PP outcome. Next we will train a model using the 'naiveBayes()' function from
+    the 'e1071' package. We will apply this model to the testing dataset and evaluate the results to see how
+    well the model performs.
+
+- Class: cmd_question
+  Output: Let's get started by spliting the data into training and testing datasets. We will use the 'createDataPartition()' function
+    from the 'caret' package. This function requires that we specify two arguments. 'y' which is the outcome variable
+    in the dataset ('verbs$RealizationOfRec') and the proportion of data to be allocated to training, 'p'. We will
+    follow standard practice and allocate 75% of the data to training ('.75'). For our purposes we will set a final
+    argument 'list' equal to 'FALSE' in order to return a vector, not a list object. Go ahead and run this command
+    and assign the result to 'train.index'.
+  CorrectAnswer: train.index <- createDataPartition(y = verbs$RealizationOfRec, p = .75, list = FALSE)
+  AnswerTests: omnitest(correctExpr='train.index <- createDataPartition(y = verbs$RealizationOfRec, p = .75, list = FALSE)')
+  Hint: Type 'train.index <- createDataPartition(y = verbs$RealizationOfRec, p = .75, list = FALSE)'.
+
+- Class: mult_question
+  Output: Look at the Environment pane in RStudio and locate the 'train.index' variable. How many elements
+    does this vector contain?
+  AnswerChoices: 1;678;903
+  CorrectAnswer: 678
+  AnswerTests: omnitest(correctVal='678')
+  Hint: Look at the information in the brackets of 'train.index'. Which is the largest number?
+
+- Class: text
+  Output: The 678 elements in the 'train.index' vector correspond to 75% of the total data. This portion
+    has been selected at random while minding the overall proportions of the outcome variable 'y' that
+    we specified when running 'createDataPartition()'.
+
+- Class: cmd_question
+  Output: Now let's use the 'train.index' vector to subset the 'verbs' dataset into training and testing
+    datasets. First let's create the training set. Run 'verbs.train <- verbs[train.index, ]'.
+  CorrectAnswer: verbs.train <- verbs[train.index, ]
+  AnswerTests: omnitest(correctVal='verbs.train <- verbs[train.index, ]')
+  Hint: Type 'verbs.train <- verbs[train.index, ]'
+
+- Class: cmd_question
+  Output: Next let's use 'train.index' again to create the testing dataset. This time the command is similar,
+    but how we include a negative operator '-' to subset those elements not in 'train.index'.
+    Run 'verbs.test <- verbs[-train.index, ]'.
+  CorrectAnswer: verbs.test <- verbs[-train.index, ]
+  AnswerTests: omnitest(correctVal='verbs.test <- verbs[-train.index, ]')
+  Hint: Type 'verbs.test <- verbs[-train.index, ]'
+
+- Class: text
+  Output: Looking again at the Environment pane, we see the 'verbs.train' and 'verbs.test' data frames.
+    The information listed tells us about the number of observations and variables. Both have the same number
+    of variables, but they differ in the number of observations; 678 an 225 respectively. These numbers
+    correspond to roughly 75% and 25% of the total 903 observations.
+
+- Class: cmd_question
+  Output: Now, let's confirm that
+    the proportions of the outcome variable 'RealizationofRec' are the same for both the 'verbs.train' and
+    the 'verbs.test' data frames. We will use the 'table()' and 'prop.table()' functions here.
+    Run 'verbs.train$RealizationOfRec %>% table %>% prop.table' now.
+  CorrectAnswer: verbs.train$RealizationOfRec %>% table %>% prop.table
+  AnswerTests: omnitest(correctVal='verbs.train$RealizationOfRec %>% table %>% prop.table')
+  Hint: Type 'verbs.train$RealizationOfRec %>% table %>% prop.table'
+
+- Class: mult_question
+  Output: What proportion of the outcome variable is realized as NP?
+  AnswerChoices: 38%;62%
+  CorrectAnswer: 62%
+  AnswerTests: omnitest(correctVal='62%')
+  Hint: Look at the number under 'NP' and remember that that number is a proportion of 1.
+
+- Class: cmd_question
+  Output: Now check the proportions of the outcome variable for the 'verbs.test' data frame.
+    Run 'verbs.test$RealizationOfRec %>% table %>% prop.table' now.
+  CorrectAnswer: verbs.test$RealizationOfRec %>% table %>% prop.table
+  AnswerTests: omnitest(correctVal='verbs.test$RealizationOfRec %>% table %>% prop.table')
+  Hint: Type 'verbs.test$RealizationOfRec %>% table %>% prop.table'
+
+- Class: text
+  Output: The proportions are not exactly the same in this case, but they are pretty close. That's just
+    fine. We just want to make sure there are not large discrepancies. At this point we are ready to
+    train our model on the 'verbs.train' data.
+
+- Class: cmd_question
+  Output: To train a Naive Bayes Classification model we will use the 'naiveBayes()' function from
+    the 'e1071' package. Similar to the linear regression function 'lm()' we saw in the significance testing
+    lesson, the 'naiveBayes()' function takes a formula as the primary argument. In this case the formula
+    will be 'RealizationOfRec ~ .', which is translated as 'RealizationOfRec' as a function of all other variables
+    in the data. The data to be used is the 'verbs.train' data frame and that is the value of the second
+    argument 'data'. Assign the resulting model to 'nb'.
+  CorrectAnswer: nb <- naiveBayes(RealizationOfRec ~ ., data = verbs.train)
+  AnswerTests: omnitest(correctVal='nb <- naiveBayes(RealizationOfRec ~ ., data = verbs.train)')
+  Hint: Type 'nb <- naiveBayes(RealizationOfRec ~ ., data = verbs.train)'.
+
+- Class: text
+  Output: The 'nb' object now contains our trained model and can be used to predict the outcome ('NP' or 'PP') based
+    on new data with the same predictors types that the model was trained on. We are going to evaluate
+    how well the trained model generalizes to the testing datasets we set aside earlier.
+
+- Class: cmd_question
+  Output: To start let's apply the 'nb' model to just one observation (row) from the 'verbs.test' data.
+    To do this the 'predict()' function is used. This function requires the trained model 'nb' and
+    the new data ('verbs.test'), this time subsetted as 'verbs.test[1, ]' to provide only the
+    first observation. Run this command without assigning it to a variable - 'predict(nb, verbs.test[1,])'.
+  CorrectAnswer: predict(nb, verbs.test[1,])
+  AnswerTests: omnitest(correctVal='predict(nb, verbs.test[1,])')
+  Hint: Type 'predict(nb, verbs.test[1,])'.
+
+- Class: cmd_question
+  Output: A predicted outcome is returned for the predictores that we provided from the first observation
+    in the 'verbs.test' dataset. The predicted outcome is selected based on the highest posterior probability
+    that the data was generated by the provided predictores. In a binary outcome scenario like ours, that means
+    that minimally the predicted outcome will have a posterior probability greater than 50%. We can see the
+    'raw' probability scores for each class by running the 'predict()' function, as we did before, but now adding
+    the argument 'type = "raw"'. Try that now and observe the probability scores for the two possible outcomes.
+  CorrectAnswer: predict(nb, verbs.test[1,], type = "raw")
+  AnswerTests: omnitest(correctVal='predict(nb, verbs.test[1,], type = "raw")')
+  Hint: Type 'predict(nb, verbs.test[1,], type = "raw")'.
+
+- Class: cmd_question
+  Output: Now let's apply the 'nb' model we trained to the entire testing set, 'verbs.test', without the optional
+    argument 'type = "raw"' so that we only get the predicted outcome class. Assign the result to 'results'.
+  CorrectAnswer: results <- predict(nb, verbs.test)
+  AnswerTests: omnitest(correctVal='results <- predict(nb, verbs.test)')
+  Hint: Type 'results <- predict(nb, verbs.test)'
+
+- Class: cmd_question
+  Output: We now have a vector of predicted outcome labels for each of the observations in the 'verbs.test' dataset.
+    Let's do a quick inspection of the 'results' vector by applying the function 'table()' to it.
+  CorrectAnswer: table(results)
+  AnswerTests: omnitest(correctVal='table(results)')
+  Hint: Type 'table(results)'
+
+- Class: cmd_question
+  Output: The tabulation of the predicted outcomes shows that 'NP' is predicted more often than 'PP'. But this is to
+    be expected. Remember that in our initial dataset 'verbs', and in our training and testing data
+    splits, 'NP' was the common class label to begin with (specifically, there was a 62% 'NP' and 38% 'PP' distribution.
+    So to get a better sense of comparable the predicted to be a better sense let's pipe the output
+    of 'table(results)' to the function 'prop.table()'. Do that now.
+  CorrectAnswer: table(results) %>% prop.table()
+  AnswerTests: omnitest(correctVal='table(results) %>% prop.table()')
+  Hint: Type 'table(results) %>% prop.table()'
+
+- Class: text
+  Output: Now we can see that 'NP' is predicted more than expected given the apriori distribution (input distribution).
+    This means there are errors in the predicted outcomes. It is important to note that very few, if any, trained
+    models are perfect. However, to evaluate the performance of our trained model we need to evaluate where the errors
+    occur. To do this we will cross-tabulate the predicted outcomes we obtained with the correct outcomes.
+
+- Class: cmd_question
+  Output: The 'caret' package has a useful function 'confusionMatrix()' that we will use to obtain a host of information
+    regarding the performance of our 'nb' model. The function takes two required arguments; the predicted outcomes in
+    the 'results' vector and then the correct outcomes from the 'verbs.test' dataset ('verbs.test$RealizationOfRec'). We
+    will add an optional argument 'dnn = c("Predicted", "Actual")' to provide labels for the cross-tabulation table for
+    interpretation purposes. So enter this command 'confusionMatrix(results, verbs.test$RealizationOfRec, dnn = c("Predicted", "Actual"))'
+  CorrectAnswer: confusionMatrix(results, verbs.test$RealizationOfRec, dnn = c("Predicted", "Actual"))
+  AnswerTests: omnitest(correctVal='confusionMatrix(results, verbs.test$RealizationOfRec, dnn = c("Predicted", "Actual"))')
+  Hint: Type 'confusionMatrix(results, verbs.test$RealizationOfRec, dnn = c("Predicted", "Actual"))'
+
+- Class: text
+  Output: The 'confusionMatrix()' function provides quite a bit of information to allow us to evaluate the model's performance.
+    For our purposes, let's focus on the confusion matrix at the top of the output. In this table we see the cross-tabulation
+    of the predicted and actual class labels. Where predicted and actual coincide we have correct predictions. These are found
+    in what is called the diagonals. The off-diagonals is where we find errors.
+
+- Class: text
+  Output: Skipping down to the first line of the evaluation results, we see that the overall accuracy of our model.
+    This score is derived by dividing the correct predictions by all the predictions made. This is clearly not perfect, but to know whether the model is 'good' is relative. An often used baseline
+    to evaluate to what degree our model has leveraged information from the predictors is to compare it to the accuracy
+    score we would obtain if we were to always predict the most frequent class label in the dataset. This is the apriori
+    distribution that we've already seen, specifically 'NP' 62%. So yes, the predictors in our model do help improve
+    prediction accuracy compared to this baseline.
+
+- Class: text
+  Output: Now our accuracy scores is better than the baseline does not mean we must be satisfied with the model as it is. In most
+    cases the next step would be to try to improve the model. We will not go into the details in this lesson. However,
+    it is worth noting there are various approaches to improving model performance which may involve including or
+    excluding predictors, adding weights to certain predictors, etc.
+
+- Class: text
+  Output: It is also worth noting that we can dig into the model object and gain insight into what predictors were
+    most or least influential in guiding the model's predictions. This information can be used to improve the model
+    performance or simply to gain insight into patterns that may help us understand the relationships between our
+    predictors and the respective outcomes. Let's take a quick glance at a couple of our predictors, namely
+    'AnimacyOfTheme' and 'AnimacyOfRec'.
+
+- Class: cmd_question
+  Output: The information about the probability that a predictor is associated with each of the outcomes is stored in
+    the 'nb' object in the 'tables' list. Enter 'nb$tables$AnimacyOfRec' now.
+  CorrectAnswer: nb$tables$AnimacyOfRec
+  AnswerTests: omnitest(correctVal='nb$tables$AnimacyOfRec')
+  Hint: Type 'nb$tables$AnimacyOfRec'
+
+- Class: cmd_question
+  Output: Now enter 'nb$tables$AnimacyOfTheme' now.
+  CorrectAnswer: nb$tables$AnimacyOfTheme
+  AnswerTests: omnitest(correctVal='nb$tables$AnimacyOfTheme')
+  Hint: Type 'nb$tables$AnimacyOfTheme'
+
+- Class: text
+  Output: Comparing these two predictors we see that both 'NP' and 'PP' ditransitives have very high probabilities of being
+    associated with inanimate themes and low associations with animate themes. This means that the 'AnimacyOfTheme' predictor is
+    not particularly distriminative. The 'AnimacyOfRec' predictor, on the other hand, demonstrates more distriminative
+    power; animate recipients are predicted to be 'NP's higher probability than 'PP's. Now this is not a large difference
+    but it is larger than the distriminative power that 'AnimacyOfTheme' provides. This can be of practical use to improve
+    our model's performance and/or theoretically insightful as it potentially tells us that speakers are sensitive to the
+    animacy of the recipient when choosing either a 'NP' or 'PP' ditransitive structure.
+
+- Class: text
+  Output: That does it for this introduction to supervised learning with the Naive Bayes algorithm
+    in R!
+

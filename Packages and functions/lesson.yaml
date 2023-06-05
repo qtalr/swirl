@@ -1,0 +1,215 @@
+- Class: meta
+  Course: swirl
+  Lesson: Packages and functions
+  Author: Jerid Francom
+  Type: Standard
+  Organization: WFU
+  Version: 1.0
+
+- Class: text
+  Output: In this lesson, you will be introduced more formally to functions and
+    downloadable collections of functions known as 'packages'.
+
+- Class: text
+  Output: "Don't forget that you can, temporarily, leave the lesson by typing play() and then
+    return by typing nxt()."
+
+- Class: text
+  Output: Functions are one of the fundamental building blocks of the R language. They are small
+    pieces of reusable code that can be treated like any other R object.
+
+- Class: text
+  Output: "If you've worked through any other lesson in this course, you've probably
+    used some functions already. Functions are usually characterized by the name
+    of the function followed by parentheses."
+
+- Class: cmd_question
+  Output: "Let's try using a few basic functions just for fun. The Sys.Date()
+    function returns a string representing today's date. Type Sys.Date() below
+      and see what happens."
+  CorrectAnswer: Sys.Date()
+  AnswerTests: omnitest(correctExpr='Sys.Date()')
+  Hint: "Display today's date by typing: Sys.Date()"
+
+- Class: text
+  Output: "Most functions in R return a value. Functions like Sys.Date() return a
+    value based on your computer's environment, while other functions manipulate
+    input data in order to compute a return value."
+
+- Class: cmd_question
+  Output: "The mean() function takes a vector of numbers as input, and returns
+    the average of all of the numbers in the input vector. Inputs to functions
+    are often called arguments. Providing arguments to a function is also
+    sometimes called passing arguments to that function. Arguments you want to
+    pass to a function go inside the function's parentheses. Try passing the argument
+    c(2, 4, 5) to the mean() function."
+  CorrectAnswer: mean(c(2, 4, 5))
+  AnswerTests: omnitest(correctExpr='mean(c(2, 4, 5))')
+  Hint: "Compute the average of 2, 4, and 5 by typing: mean(c(2, 4, 5))"
+
+- Class: text
+  Output: Functions usually take arguments which are variables that the function operates on. For example,
+    the mean() function takes a vector as an argument, like in the case of mean(c(2,6,8)). The mean()
+    function then adds up all of the numbers in the vector and divides that sum by the
+    length of the vector.
+
+- Class: text
+  Output: "There are many functions available in the default installation of R, 'mean()'
+    is one of them You can also write your own functions, or custom functions.
+    Let's take a look at custom functions now."
+
+- Class: text
+  Output: The goal in writing a custom function is to create a reusable set of R
+    commands to avoid coding redundancy and also to avoid introducing errors that
+    can occur when we attempt to retype a set of previous commands.
+
+- Class: cmd_question
+  Output: When you create a custom function that function can be created as part of
+    the analysis script 'inline' or it can be 'imported' from another script that's sole
+    purpose is to organize useful functions for potential use in multiple analyses.
+    To import functions from another script we can use the function 'source()' and
+    include a path to the script with the functions we want to import. I've already
+    'sourced' the script with the functions. Let's take a look what functions we have
+    available to use using 'ls()'.
+  CorrectAnswer: ls()
+  AnswerTests: omnitest(correctExpr='ls()')
+  Hint: "Type 'ls()'."
+
+- Class: cmd_question
+  Output: To see the source code of the function, you can type the function name without parentheses. Type 'myMean' to see the code for the function 'myMean()'.
+  CorrectAnswer: myMean
+  AnswerTests: omnitest(correctExpr='myMean')
+  Hint: Type 'myMean'.
+
+- Class: text
+  Output: The function 'myMean()' has one argument, 'x' which we expect to be a numeric vector, and then uses that argument to calculate the mean by dividing the sum of the elements in the vector 'x' by the length of the vector 'x'.
+
+- Class: text
+  Output: Note that the name 'x' for our argument is not special, it could have been any legal variable name (i.e. it can't start with a number). In pratice it is best to name the argument variables with sensible names to that it is easier to understand what the function needs to complete it's task.
+
+- Class: cmd_question
+  Output: For example, let's look at the source code for another function we imported called 'helloUser()'. Type 'helloUser' to see the source code.
+  CorrectAnswer: helloUser
+  AnswerTests: omnitest(correctExpr='helloUser')
+  Hint: Type 'helloUser'.
+
+- Class: cmd_question
+  Output: In the 'helloUser()' function we see that the one argument is named 'user.name', which is more meaningful. Let's see what the function does by running 'helloUser(user.name = "John")'.
+  CorrectAnswer: helloUser(user.name = "John")
+  AnswerTests: omnitest(correctExpr='helloUser(user.name = "John")')
+  Hint: Type 'helloUser(user.name = "John")'.
+
+- Class: cmd_question
+  Output: A function can have no arguments or multiple arguments, depending on what the steps in the task performed by the function are. In the function 'helloUserTitle()' there are two arguments. Type 'helloUserTitle' to see the source code.
+  CorrectAnswer: helloUserTitle
+  AnswerTests: omnitest(correctExpr='helloUserTitle')
+  Hint: Type 'helloUserTitle'.
+
+- Class: cmd_question
+  Output: We see that the two arguments in the 'helloUserTitle()' function are 'user.name' and 'title'. To supply the function with values for the arguments when there are multiple arguments we can either rely on the default order, and omit the argument names in the function, or supply the argument names -in which case you directly tell R how to map the values and the ordering of the arguments no longer matters. Type 'helloUserTitle("John", "Mr.")' and see what happens.
+  CorrectAnswer: helloUserTitle("John", "Mr.")
+  AnswerTests: omnitest(correctExpr='helloUserTitle("John", "Mr.")')
+  Hint: Type 'helloUserTitle("John", "Mr.")'.
+
+- Class: cmd_question
+  Output: The ordering of functions is also of importance when working with the 'piping' operation ' %>% ' from the 'magrittr' package. The output that is piped to a function will assume that the correct argument to receive the input is the first. I've loaded the 'magrittr' package so let's test this out. Type '"John" %>% helloUserTitle(title = "Mr.")'.
+  CorrectAnswer: '"John" %>% helloUserTitle(title = "Mr.")'
+  AnswerTests: omnitest(correctExpr='"John" %>% helloUserTitle(title = "Mr.")')
+  Hint: Type '"John" %>% helloUserTitle(title = "Mr.")'.
+
+- Class: cmd_question
+  Output: A few more points on functions before we move to packages. Type 'plotRandomNums' to show the source code for the function 'plotRandomNums()'.
+  CorrectAnswer: plotRandomNums
+  AnswerTests: omnitest(correctExpr='plotRandomNums')
+  Hint: Type 'plotRandomNums'.
+
+- Class: cmd_question
+  Output: First, the arguments of functions can have default values, such as in 'max.num' and 'title'. That means that if you do not assign a value to these arguments, the default value will be assumed, in this case 'max.num = 100', and 'title = "Random numbers"'. Type 'plotRandomNums(10)' and look at the 'Plots' pane in RStudio to see the output of this function.
+  CorrectAnswer: plotRandomNums(10)
+  AnswerTests: omnitest(correctExpr='plotRandomNums(10)')
+  Hint: Type 'plotRandomNums(10)'.
+
+- Class: text
+  Output: In the plot you will see that the highest random number is less than or equal to 100 and the title of the plot is "Random numbers".
+
+- Class: cmd_question
+  Output: Let's say we want 25 random numbers less to or equal to 1000. We now just specify a new value for 'max.num'. Type 'plotRandomNums(25, 1000)'.
+  CorrectAnswer: plotRandomNums(25, 1000)
+  AnswerTests: omnitest(correctExpr='plotRandomNums(25, 1000)')
+  Hint: Type 'plotRandomNums(25, 1000)'.
+
+- Class: text
+  Output: "Our plot has now changed to reflect the new values we assigned to 'size' and 'max.num'. Note that I've used argument ordering in this case. I could have labeled these arguments as well."
+
+- Class: cmd_question
+  Output: A second aspect of the function 'plotRandomNums()' to note is that there are three dots '...' as one of the arguments. These dots tell R to accept any number of arguments and pass them to one of the functions within the custom function. In this case the dots are assigned to the 'sort()' function. One argument of sort that we can add to our argument list is the 'decreasing = TRUE' argument. Type 'plotRandomNums(25, 1000, decreasing = TRUE)' and note that the sort order has changed in the plot!
+  CorrectAnswer: plotRandomNums(25, 1000, decreasing = TRUE)
+  AnswerTests: omnitest(correctExpr='plotRandomNums(25, 1000, decreasing = TRUE)')
+  Hint: Type 'plotRandomNums(25, 1000, decreasing = TRUE)'.
+
+- Class: cmd_question
+  Output: The third, and final, aspect I want to point out here about functions is that variables created inside the function only exist during execution of that function. That is, the variable 'random.numbers' that is created for use with the function 'plot()' in our function does not create an object in the R workspace. Check the workspace with 'ls()'. You won't see it there!
+  CorrectAnswer: ls()
+  AnswerTests: omnitest(correctExpr='ls()')
+  Hint: Type 'ls()'.
+
+- Class: text
+  Output: On the other hand, packages loaded with 'library()' inside of a function do persist in the R session. Let's turn now to packages.
+
+- Class: text
+  Output: In essence a package is a downloadable set of functions that another R user has created to perform a set of related tasks. These functions are not unlike the ones we created, in spirit, but will inevitably be more useful and more powerful than those that we've been working with.
+
+- Class: text
+  Output: "R comes 'pre-loaded' with a set of common packages known as the 'base packages'. To extend functionality, however, we can use R to search and download new packages."
+
+- Class: cmd_question
+  Output: In the R console we can use the function 'install.packages()' to target a specific package and download it. Let's do that now. Let's download the 'quanteda' package now. Type 'install.packages("quanteda")'. You may be asked to select a mirror -aka a site to download from. Just select any mirror and the download will begin and print the status of the download in the console.
+  CorrectAnswer: install.packages("quanteda")
+  AnswerTests: omnitest(correctExpr='install.packages("quanteda")')
+  Hint: Type 'install.packages("quanteda")'.
+
+- Class: cmd_question
+  Output: There are two ways to access the functions in the package. The most common is to use the function 'library()' and supply the name of the package as the only argument. Let's to that now. Type 'library(quanteda)'.
+  CorrectAnswer: library(quanteda)
+  AnswerTests: omnitest(correctExpr='library(quanteda)')
+  Hint: Type 'library(quanteda)'.
+
+- Class: text
+  Output: Some packages output some information when loading and others do not. You can ignore this information for now.
+
+- Class: cmd_question
+  Output: Once a package is loaded via 'library()' the functions are now accessible directly from the console. In R-speak, the package is 'attached'. To see all of the 'attached' packages, you can run 'sessionInfo()'. Note you will see a lot of output about the R workspace, but focus on the 'other attached packages:' section, there you will see the packages that have been loaded via 'library()'.
+  CorrectAnswer: sessionInfo()
+  AnswerTests: omnitest(correctExpr='sessionInfo()')
+  Hint: Type 'sessionInfo()'.
+
+- Class: text
+  Output: It is not always necessary to load an entire package into the R workspace.
+    It can sometimes be the case that you will need to use a function or two from a
+    package and very limited times. In cases like this it sometimes makes sense to
+    reference the downloaded, but not loaded, package via the '::' operator. For
+    example to use the function 'tokens()' from the 'quanteda' package, without
+    loading it, you can type, 'quanteda::tokens()', for example.
+
+- Class: text
+  Output: The '::' operator is also helpful when used in combination with RStudio's
+    TAB functionality. If you type 'quanteda::' and then hit the TAB key on your
+    keyboard a list of the available functions in this package appears. This can be
+    very helpful to explore functions on the fly.
+
+- Class: text
+  Output: Furthermore, many, but not all, packages come with tutorials, or 'vignettes'.
+    To read a vignette, browse the 'Packages' pane in RStudio and find the package. Then
+    Look at the lines before the 'Help Pages'. If there is a vignette, it will be listed
+    there.
+
+- Class: text
+  Output: If a package does or does not have vignette it's often worth it to search the internet
+    for other tutorials to get experience with how R users are using the package.
+
+- Class: text
+  Output: This concludes this lesson on packages and functions. Functions are a
+    powerful programming tool for efficient and reproducible results. There is
+    much more to learn about functions, but we've covered the bases. I encourage
+    you to do your own research.
+

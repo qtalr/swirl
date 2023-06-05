@@ -1,0 +1,298 @@
+- Class: meta
+  Course: swirl
+  Lesson: Significance testing
+  Author: Jerid Francom
+  Type: Standard
+  Organization: WFU
+  Version: 1.0
+
+- Class: text
+  Output: In this lesson, you will learn how to implement various statistical tests in
+    common significance testing scenarios.
+
+- Class: text
+  Output: "Don't forget that you can, temporarily, leave the lesson by typing play() and then
+    return by typing nxt()."
+
+- Class: cmd_question
+  Output: As an overview we will look at seven statistical scenarios. The first three will
+    include a categorical dependent variable and the last four our dependent variable will
+    be continuous. I have loaded three datasets to illustrate these statistical methods.
+    Use the 'ls()' function to see them in the workspace.
+  CorrectAnswer: ls()
+  AnswerTests: omnitest(correctExpr='ls()')
+  Hint: Type 'ls()'.
+
+- Class: cmd_question
+  Output: The first scenario is when we have a categorical dependent variable and no independent variables.
+    The 'a' dataset includes three categorical variables, preview the first few lines of this dataset
+    with the 'head()' function.
+  CorrectAnswer: 'head(a)'
+  AnswerTests: omnitest(correctExpr='head(a)')
+  Hint: Type 'head(a)'.
+
+- Class: cmd_question
+  Output: Let's assume that the 'construction' column is our dependent variable. Let's tablulate the
+    counts for the outcomes in 'construction' using the 'xtabs()' function.
+    Type 'tab <- xtabs(~ construction, data = a)'.
+  CorrectAnswer: tab <- xtabs(~ construction, data = a)
+  AnswerTests: omnitest(correctExpr='tab <- xtabs(~ construction, data = a)')
+  Hint: Type 'tab <- xtabs(~ construction, data = a)'.
+
+- Class: cmd_question
+  Output: Now view the table by simply typing 'tab' and hitting ENTER.
+  CorrectAnswer: tab
+  AnswerTests: omnitest(correctExpr='tab')
+  Hint: Type 'tab'.
+
+- Class: cmd_question
+  Output: To evaluate the null hypothesis that there are no differences between the levels
+    of 'contruction', we use the Chi-squared test. To implement this test in R, we use
+    the 'chisq.test()' function. Type 'results <- chisq.test(tab)'.
+  CorrectAnswer: results <- chisq.test(tab)
+  AnswerTests: omnitest(correctExpr='results <- chisq.test(tab)')
+  Hint: Type 'results <- chisq.test(tab)'.
+
+- Class: cmd_question
+  Output: Now view the results by simply typing 'results' and hitting ENTER.
+  CorrectAnswer: results
+  AnswerTests: omnitest(correctExpr='results')
+  Hint: Type 'results'.
+
+- Class: mult_question
+  Output: Based on the p-value, is the difference between the frequency of the two outcomes in
+    the 'construction' variable sufficiently large that we would not expect this result by chance?
+  AnswerChoices: Yes;No
+  CorrectAnswer: No
+  AnswerTests: omnitest(correctVal= 'No')
+  Hint: We have a p-value that is larger than .05 which means that the chance that the result
+    is by chance is sufficiently large to maintain the null hypothesis.
+
+- Class: cmd_question
+  Output: A second scenario is when we have a categorical dependent variable and one categorical
+    independent variable. We can use the same dataset 'a'. Take a quick look at the data again with 'head()'.
+  CorrectAnswer: head(a)
+  AnswerTests: omnitest(correctExpr='head(a)')
+  Hint: Type 'head(a)'.
+
+- Class: cmd_question
+  Output: Let's see if there is a relationship between the 'construction' choice and
+    the 'concreteness' of the direct object. Use 'xtabs()' with the formula '~ construction + concreteness'.
+    Assign the result to 'tab'.
+  CorrectAnswer: tab <- xtabs(~ construction + concreteness, data = a)
+  AnswerTests: omnitest(correctExpr='tab <- xtabs(~ construction + concreteness, data = a)')
+  Hint: Type 'tab <- xtabs(~ construction + concreteness, data = a)'.
+
+- Class: cmd_question
+  Output: Now view the table by simply typing 'tab' and hitting ENTER.
+  CorrectAnswer: tab
+  AnswerTests: omnitest(correctExpr='tab')
+  Hint: Type 'tab'.
+
+- Class: cmd_question
+  Output: Since we have two categorical variables the tabulation has four cells. As is often the
+    case, visualization is very helpful in getting a sense of the distribution of the data.
+    We can create a quick plot of tabulation data with the 'assocplot()' function.
+    Type 'assocplot(tab)' now and see.
+  CorrectAnswer: assocplot(tab)
+  AnswerTests: omnitest(correctExpr='assocplot(tab)')
+  Hint: Type 'assocplot(tab)'.
+
+- Class: mult_question
+  Output: The dotted line marks the expected value, all else being equal. 'concreteness' on
+    the y-axis and the 'construction' on the x-axis. Using the plot as your guide, which
+    contruction tends to prefer 'concrete' direct objects?
+  AnswerChoices: V_DO_PART;V_PART_DO
+  CorrectAnswer: V_DO_PART
+  AnswerTests: omnitest(correctVal='V_DO_PART')
+  Hint: The value 'V_DO_PART' shows a positive value for 'concrete'!
+
+- Class: cmd_question
+  Output: The next scenario again involves a categorical dependent variable, but now instead
+    of one categorical independent variable, there can be two or more independent
+    variables --both categorical and continuous. We can again use the 'a' dataset, and
+    include the 'variety' variable as part of the analysis. Take a look at the dataset
+    again using 'head()'.
+  CorrectAnswer: head(a)
+  AnswerTests: omnitest(correctExpr='head(a)')
+  Hint: Type 'head(a)'.
+
+- Class: text
+  Output: Adding another variable to our analysis changes things a bit. Chi-squared is
+    not equipped to deal with multiple independent variables. There is not one go-to
+    statistical test for this type of analysis, but a particularly effective and easily
+    interpretable approach is to use Decision Trees.
+
+- Class: cmd_question
+  Output: Decision trees produce a series of ordered rules that organize the most strongly
+    associated variables and their particular values with specific outcomes. These rules can
+    be visualized which provides an intuitive view of the results. Decision trees are not
+    part of the standard R download, so we need to load the package 'party' with 'library()' now.
+  CorrectAnswer: library(party)
+  AnswerTests: omnitest(correctExpr='library(party)')
+  Hint: Type 'library(party)'.
+
+- Class: cmd_question
+  Output: Now, we need to prepare the variable types in dataset 'a' before we conduct this analysis. The analysis we will perform requires that the variables be factor vector types. We can convert the three variables 'construction', 'concreteness', and 'variety' from character vectors to factor vectors with the 'as.factor()' function. To convert all three in one command I've prepared a command. Type 'a[,1:3] <- lapply(a[,1:3], as.factor)'.
+  CorrectAnswer: a[,1:3] <- lapply(a[,1:3], as.factor)
+  AnswerTests: omnitest(correctExpr='a[,1:3] <- lapply(a[,1:3], as.factor)')
+  Hint: Type 'a[,1:3] <- lapply(a[,1:3], as.factor)'.
+
+- Class: cmd_question
+  Output: The function we use from the 'party' package is 'ctree()' and the arguments look very much
+    like those we used in the 'xtabs()' function, yet the formula includes the depedent variable on
+    the left side the the '~'. Type 'results <- ctree(construction ~ concreteness + variety, data = a)'.
+  CorrectAnswer: results <- ctree(construction ~ concreteness + variety, data = a)
+  AnswerTests: omnitest(correctExpr='results <- ctree(construction ~ concreteness + variety, data = a)')
+  Hint: Type 'results <- ctree(construction ~ concreteness + variety, data = a)'.
+
+- Class: cmd_question
+  Output: Now view the results by simply typing 'results' and hitting ENTER.
+  CorrectAnswer: results
+  AnswerTests: omnitest(correctExpr='results')
+  Hint: Type 'results'.
+
+- Class: cmd_question
+  Output: The output of 'results' is a little verbose and sometimes hard to interpret. A plot of
+    this output is much more easily interpretable. Run 'plot(results)'.
+  CorrectAnswer: plot(results)
+  AnswerTests: omnitest(correctExpr='plot(results)')
+  Hint: Type 'plot(results)'.
+
+- Class: cmd_question
+  Output: Let's now switch to analyses where the dependent variable is continuous. Let's take a
+    quick look at dataset 'b'. We will use it for the next couple of scenarios. Use 'head()' on it now.
+  CorrectAnswer: head(b)
+  AnswerTests: omnitest(correctExpr='head(b)')
+  Hint: Type 'head(b)'.
+
+- Class: cmd_question
+  Output: Let's take the scenario in which we want to evaluate the distribution of a continuous dependent variable. Our dependent variable in this case will be the 'len_io' column. It corresponds to the word length of indirect objects in a corpus. The question we often ask of continuous variables is whether they conform to the normal distribution (i.e. 'bell curve') or not. To test this we use the 'shapiro.test()' which will tell us if the distribution of a continuous variable does or does not differ from the normal distribution. Run 'shapiro.test(b$len_io)'.
+  CorrectAnswer: shapiro.test(b$len_io)
+  AnswerTests: omnitest(correctExpr='shapiro.test(b$len_io)')
+  Hint: Type 'shapiro.test(b$len_io)'.
+
+- Class: text
+  Output: The p-value is less than our standard significance level of .05 so the distribution of
+    the 'len_io' variable does differ from the normal distribution --that is, it is not normally
+    distributed. We will see that this is a key peice of information to help us determine which
+    type of significance test to run in the following scenarios. Normally distributed dependent
+    variables use parametric tests, and non-normally distributed dependent variables use
+    non-parametric tests.
+
+- Class: text
+  Output: Now in the case that we want to evaluate the distribution of a continuous dependent
+    variable according to the levels of a categorical variable, such as 'construction', in this
+    case, we look towards either the parametic 't.test()' or the non-parametric 'wilcox.test()'.
+    Since we already know from our previous test on the 'len_io' variable, we are in need of a
+    non-parametic test as our dependent variable is not normally distributed.
+
+- Class: cmd_question
+  Output: Before we get to the test, it is important to visualize the data to see if a trend
+    exists in the data, and if there is in what direction it is going. Let's use
+    the 'tapply()' function to get the mean 'len_io' for each level of 'construction'.
+    Type 'tapply(b$len_io, b$construction, mean)'.
+  CorrectAnswer: tapply(b$len_io, b$construction, mean)
+  AnswerTests: omnitest(correctExpr='tapply(b$len_io, b$construction, mean)')
+  Hint: Type 'tapply(b$len_io, b$construction, mean)'.
+
+- Class: cmd_question
+  Output: So, from this summary it appears that ditransitives, on average, tend to have longer
+    indirect objects than prepositional datives. Now we have a sense of the direction of the
+    data. Let's perform the non-parametric test. Type 'wilcox.test(len_io ~ construction, data = b)'.
+  CorrectAnswer: wilcox.test(len_io ~ construction, data = b)
+  AnswerTests: omnitest(correctExpr='wilcox.test(len_io ~ construction, data = b)')
+  Hint: Type 'wilcox.test(len_io ~ construction, data = b)'.
+
+- Class: cmd_question
+  Output: The p-value did not meet our critical threshold for significance, suggesting there
+    is no difference between the indirect object lengths for 'construction' outcomes. But one
+    potential issue that may obscure a difference here is that we are not including the fact
+    that we are really just interested in testing one way the data differ --specifically are
+    ditransitives longer than prepositional datives. In this case we can use a one-tailed
+    analysis by specifying 'alternative = "greater"' in the 'wilcox.test()'.
+    Type 'wilcox.test(len_io ~ construction, data = b, alternative = "greater")' now.
+  CorrectAnswer: wilcox.test(len_io ~ construction, data = b, alternative = "greater")
+  AnswerTests: omnitest(correctExpr='wilcox.test(len_io ~ construction, data = b, alternative = "greater")')
+  Hint: Type 'wilcox.test(len_io ~ construction, data = b, alternative = "greater")'.
+
+- Class: text
+  Output: Providing this extra information to the test we in fact do see that the difference
+    is larger than would be expected by chance. We therefore accept the alternative
+    hypothesis --ditransitives are longer than prepositional datives.
+
+- Class: cmd_question
+  Output: Our last two scenarios include a continuous dependent variable with one or more independent variables. Let's turn to our last dataset, dataset 'c'. Take a look with 'head()'.
+  CorrectAnswer: head(c)
+  AnswerTests: omnitest(correctExpr='head(c)')
+  Hint: Type 'head(c)'.
+
+- Class: text
+  Output: In the case that we have two continuous variables, such as 'len_syll' syllable
+    length and 'num_wrds' number of words, we perform a correlation test. Again, as we did
+    before, we need to know if the continuous variables are normally distributed.
+
+- Class: cmd_question
+  Output: To save space, I did the 'shapiro.test()' on both variables and both are not normally distributed. This means we will need to use a non-parametric test. For correlation the parametric test is Pearson's r and the non-parametric test is Kendall's tau. Both are implemented with the 'cor.test()' function, but Kendall's tau needs the extra argument 'method = "kendall"'. Run 'cor.test(c$len_syll, c$num_wrds, method = "kendall")' now.
+  CorrectAnswer: cor.test(c$len_syll, c$num_wrds, method = "kendall")
+  AnswerTests: omnitest(correctExpr='cor.test(c$len_syll, c$num_wrds, method = "kendall")')
+  Hint: Type 'cor.test(c$len_syll, c$num_wrds, method = "kendall")'.
+
+- Class: cmd_question
+  Output: The p-value is less that .05 so there is a significant correlation between the variables --but
+    how are they correlated? Without a plot we really don't know. Does syllable length increase or decrease
+    with an increase in the number of words? In this particularly simple example it may be logically clear
+    which direction the correlation trend takes, but a plot is always a strong recommendation to make sure
+    it is clear what the data is doing.
+    Type 'ggplot(c, aes(x = num_wrds, y = len_syll)) + geom_point() + geom_smooth(method = "lm")'.
+  CorrectAnswer: ggplot(c, aes(x = num_wrds, y = len_syll)) + geom_point() + geom_smooth(method = "lm")
+  AnswerTests: omnitest(correctExpr='ggplot(c, aes(x = num_wrds, y = len_syll)) + geom_point() + geom_smooth(method = "lm")')
+  Hint: Type 'ggplot(c, aes(x = num_wrds, y = len_syll)) + geom_point() + geom_smooth(method = "lm")'.
+
+- Class: text
+  Output: So now it is clear --syllable length and number of words are positively correlated.
+
+- Class: cmd_question
+  Output: The last significance testing scenario we will cover is the case in which we have a
+    continuous dependent variable and multiple independent variables, both continuous and/ or
+    categorical. Let's take another quick look at dataset 'c' to see what variables are available.
+    Use 'head(c)'.
+  CorrectAnswer: head(c)
+  AnswerTests: omnitest(correctExpr='head(c)')
+  Hint: Type 'head(c)'.
+
+- Class: cmd_question
+  Output: Let's evaluate the effect of 'num_wrds' and 'variety' on the dependent variable 'len_syll'.
+    To get a sense of what the data is doing, let's create a scatterplot, like the one before, but
+    with a 'color = "variety"' parameter for our second independent variable. Type
+    'ggplot(c, aes(x = num_wrds, y = len_syll, color = variety)) + geom_point() + geom_smooth(method = "lm")'.
+  CorrectAnswer: ggplot(c, aes(x = num_wrds, y = len_syll, color = variety)) + geom_point() + geom_smooth(method = "lm")
+  AnswerTests: omnitest(correctExpr='ggplot(c, aes(x = num_wrds, y = len_syll, color = variety)) + geom_point() + geom_smooth(method = "lm")')
+  Hint: Type 'ggplot(c, aes(x = num_wrds, y = len_syll, color = variety)) + geom_point() + geom_smooth(method = "lm")'.
+
+- Class: cmd_question
+  Output: Now we are testing both the slope of the trend line for both varieties. We want to know if
+    they are the same or if they differ. To do this type of statistical test we use the 'lm()' function
+    to implement a Linear regression. Type 'results <- lm(len_syll ~ num_wrds + variety, data = c)'.
+  CorrectAnswer: results <- lm(len_syll ~ num_wrds + variety, data = c)
+  AnswerTests: omnitest(correctExpr='results <- lm(len_syll ~ num_wrds + variety, data = c)')
+  Hint: Type 'results <- lm(len_syll ~ num_wrds + variety, data = c)'.
+
+- Class: cmd_question
+  Output: To see the results of the 'lm()' function we use the 'summary()' on the resulting object. Do that now.
+  CorrectAnswer: summary(results)
+  AnswerTests: omnitest(correctExpr='summary(results)')
+  Hint: Type 'summary(results)'.
+
+- Class: text
+  Output: We get a lot more information from a linear regression than for our correlation tests. But
+    there are some key parts of the output to focus on. First, in the coefficients section we will see
+    listed our independent variables, ignoring the (Intercept). A quick and superficial scan of the data
+    shows that the p-value (under Pr(>|t|)) is significant for 'num_wrds' but not for 'varietybritish'.
+    Since 'variety' is a categorical variable with two outcomes one of the two is used as a reference to
+    the other. A significant p-value would suggest that one outcome differs from the other. In this case
+    we see that 'variety', in essence, does not change the existing relationship between 'len_syll' and 'num_wrds'.
+
+- Class: text
+  Output: That does it for this overview of significance testing in R.
+
