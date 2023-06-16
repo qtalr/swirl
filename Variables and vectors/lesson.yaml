@@ -14,6 +14,8 @@
   Output: "Don't forget that you can, temporarily, leave the lesson by typing play() and then
     return by typing nxt()."
 
+# R as calculator
+
 - Class: cmd_question
   Output: "In its simplest form, R can be used as an interactive calculator. Type
     5 + 7 and press Enter."
@@ -25,6 +27,9 @@
   Output: "R simply prints the result of 12 by default. However, R is a programming
     language and often the reason we use a programming language as opposed to a calculator
     is to automate some process or avoid unnecessary repetition."
+
+# Variables
+# - assignment operator
 
 - Class: text
   Output: "In this case, we may want to use our result from above in a second calculation.
@@ -75,9 +80,12 @@
   AnswerTests: omnitest(correctExpr='y')
   Hint: Type y and press Enter.
 
+# Data structures
+# - vectors (of numbers -- later we'll see other types of vectors)
+
 - Class: text
   Output: Now, let's create a small collection of numbers called a vector. Any object
-    that contains data is called a data structure and numeric vectors are the simplest
+    that contains data is called a data structure and vectors are the simplest
     type of data structure in R. In fact, even a single number is considered a vector
     of length one.
 
@@ -121,8 +129,11 @@
   AnswerTests: omnitest(correctExpr='c(z, 555, z)')
   Hint: Type c(z, 555, z). Don't create a new variable. We just want to view the result.
 
+# - arithmetic
+
+
 - Class: cmd_question
-  Output: 'Numeric vectors can be used in arithmetic expressions. Type the following
+  Output: 'Vectors of numbers can be used in arithmetic expressions. Type the following
     to see what happens, z * 2 + 100.'
   CorrectAnswer: z * 2 + 100
   AnswerTests: omnitest(correctExpr='z * 2 + 100')
